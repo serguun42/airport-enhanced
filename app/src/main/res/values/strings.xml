@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Airport Enhanced</string>
+    <string name="incoming_flights">Incoming flights</string>
+    <string name="departing_flights">Departing flights</string>
+    <string name="weather">Weather</string>
+    <string name="loading">Loading</string>
+    <string name="cannot_get_flights">Cannot get more flights</string>
+    <string name="cannot_get_signle_flight">Cannot this flight</string>
+    <string name="load_more">Load more</string>
+    <string name="create_new">Create new</string>
+    <string name="edit">Edit flight</string>
+    <string name="delete">Delete</string>
+    <string name="cannot_perform_action">Cannot perform action</string>
+    <string name="success">Success</string>
+    <string name="title_activity_login">Login</string>
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome, "</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="insufficient_rights">Insufficient rights</string>
+    <string name="save">Save</string>
+</resources>

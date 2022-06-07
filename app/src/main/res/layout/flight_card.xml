@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        android:id="@+id/flight_card"
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        android:background="@drawable/custom_ripple">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:background="@drawable/custom_ripple">
+
+        <ImageView
+                android:id="@+id/card_icon"
+                android:adjustViewBounds="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:gravity="right|bottom"
+                app:tint="@color/teal_600"
+                android:src="@drawable/ic_baseline_flight_land_24" />
+    </RelativeLayout>
+
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="12:34"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:paddingVertical="4dp"
+                    android:textSize="16dp"
+                    android:id="@+id/card_time_departure" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DUB – Dublin very long city's name"
+                    android:textFontWeight="900"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    android:layout_weight="1"
+                    android:paddingRight="8dp"
+                    android:id="@+id/card_title" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="15:55"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:paddingVertical="4dp"
+                    android:textSize="16dp"
+                    android:id="@+id/card_time_arrival" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IR4200"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/card_flight_number" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="16dp"
+                    android:text="D42"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:paddingVertical="4dp"
+                    android:textSize="14dp"
+                    android:id="@+id/card_gate" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A320"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:textSize="14dp"
+                    android:layout_weight="1"
+                    android:id="@+id/card_plane_model" />
+        </TableRow>
+    </TableLayout>
+
+</androidx.cardview.widget.CardView>
