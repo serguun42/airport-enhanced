@@ -22,7 +22,7 @@ import java.util.List;
 
 import ru.serguun42.android.airportenhanced.PickActivity;
 import ru.serguun42.android.airportenhanced.R;
-import ru.serguun42.android.airportenhanced.api.Flight;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
 
 public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.FlightViewHolder> {
     Context context;

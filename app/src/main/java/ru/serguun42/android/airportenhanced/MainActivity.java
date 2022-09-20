@@ -12,6 +12,8 @@ import ru.serguun42.android.airportenhanced.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     public static final String API_URL = "https://airport.serguun42.ru/api/v1/";
+    public static final String SHARED_PREFS_LOG_TAG = "sharedPrefsLogs";
+
     private ActivityMainBinding binding;
 
     @Override

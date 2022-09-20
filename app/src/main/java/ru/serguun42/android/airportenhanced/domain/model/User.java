@@ -1,10 +1,10 @@
-package ru.serguun42.android.airportenhanced.api;
+package ru.serguun42.android.airportenhanced.domain.model;
 
-public class UserPayload {
+public class User {
     final String username;
     final String password;
 
-    public UserPayload(String username, String password) {
+    public User(String username, String password) {
         this.username = username;
         this.password = password;
     }

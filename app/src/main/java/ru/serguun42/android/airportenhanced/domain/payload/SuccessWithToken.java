@@ -1,4 +1,4 @@
-package ru.serguun42.android.airportenhanced.api;
+package ru.serguun42.android.airportenhanced.domain.payload;
 
 public class SuccessWithToken {
     private boolean success;

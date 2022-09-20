@@ -27,7 +27,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return FlightsFragment.newInstance(position == 0);
+        return FlightsListFragment.newInstance(position == 0);
     }
 
     @Nullable

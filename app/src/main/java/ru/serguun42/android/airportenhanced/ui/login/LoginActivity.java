@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -24,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.ActivityLoginBinding;
 
@@ -78,6 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getSuccess() != null) {
                     String token = loginResult.getSuccess().getToken();
 
+                    Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Editing: setting token to " + token);
                     SharedPreferences.Editor editor = sharedPref.edit();
                     editor.putString(getString(R.string.credentials_token_key), token);
                     editor.apply();

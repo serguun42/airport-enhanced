@@ -1,4 +1,4 @@
-package ru.serguun42.android.airportenhanced.api;
+package ru.serguun42.android.airportenhanced.presentation.repository.network;
 
 import java.util.List;
 
@@ -8,8 +8,13 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
+import ru.serguun42.android.airportenhanced.domain.model.User;
+import ru.serguun42.android.airportenhanced.domain.payload.FlightDeletePayload;
+import ru.serguun42.android.airportenhanced.domain.payload.FlightEditPayload;
+import ru.serguun42.android.airportenhanced.domain.payload.SuccessWithToken;
 
-public interface JSONPlaceholder {
+public interface AirportAPI {
     @GET("flights/list")
     Call<List<Flight>> listFlights(@Query("skip") int skip);
 
@@ -29,8 +34,8 @@ public interface JSONPlaceholder {
     Call<Object> checkAccount(@Header("X-Token") String token);
 
     @POST("account/signin")
-    Call<SuccessWithToken> signIn(@Body UserPayload body);
+    Call<SuccessWithToken> signIn(@Body User body);
 
     @POST("account/signup")
-    Call<SuccessWithToken> signUp(@Body UserPayload body);
+    Call<SuccessWithToken> signUp(@Body User body);
 }

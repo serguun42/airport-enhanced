@@ -1,4 +1,4 @@
-package ru.serguun42.android.airportenhanced.api;
+package ru.serguun42.android.airportenhanced.domain.model;
 
 public class Flight {
     private String id;

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -23,9 +24,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.serguun42.android.airportenhanced.api.Flight;
-import ru.serguun42.android.airportenhanced.api.FlightEditPayload;
-import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
+import ru.serguun42.android.airportenhanced.domain.payload.FlightEditPayload;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
 import ru.serguun42.android.airportenhanced.databinding.ActivityEditorBinding;
 import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
@@ -67,6 +68,8 @@ public class Editor extends AppCompatActivity {
 
     private void save(@NonNull View root) {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
+        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Got token " + token);
+
         if (token == null) {
             gotoLogin(root);
             return;
@@ -89,13 +92,13 @@ public class Editor extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
+        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
         Call<Object> call;
 
         if (flightId != null && !flightId.isEmpty())
-            call = jsonPlaceholder.editFlight(token, new FlightEditPayload(flightId, flight));
+            call = airportAPI.editFlight(token, new FlightEditPayload(flightId, flight));
         else
-            call = jsonPlaceholder.createFlight(token, flight);
+            call = airportAPI.createFlight(token, flight);
 
         call.enqueue(new Callback<Object>() {
             @Override
@@ -140,8 +143,8 @@ public class Editor extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-        Call<Flight> call = jsonPlaceholder.getFlight(flightId);
+        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+        Call<Flight> call = airportAPI.getFlight(flightId);
         call.enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {

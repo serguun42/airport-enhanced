@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,27 +27,27 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.Editor;
-import ru.serguun42.android.airportenhanced.api.Flight;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightListAdapter;
-import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
-import ru.serguun42.android.airportenhanced.databinding.FragmentFlightsBinding;
+import ru.serguun42.android.airportenhanced.databinding.FlightsListFragmentBinding;
 import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
-public class FlightsFragment extends Fragment {
+public class FlightsListFragment extends Fragment {
     private static final String ARG_SECTION_TYPE = "is_incoming";
     private boolean isIncoming = false;
 
     private SharedPreferences sharedPref;
-    private FragmentFlightsBinding binding;
+    private FlightsListFragmentBinding binding;
     private RecyclerView recyclerView;
     private List<Flight> flightList;
     private int totalLoaded = 0;
     private boolean successfulLast = true;
 
-    public static FlightsFragment newInstance(boolean isIncoming) {
-        FlightsFragment fragment = new FlightsFragment();
+    public static FlightsListFragment newInstance(boolean isIncoming) {
+        FlightsListFragment fragment = new FlightsListFragment();
         Bundle bundle = new Bundle();
         bundle.putBoolean(ARG_SECTION_TYPE, isIncoming);
         fragment.setArguments(bundle);
@@ -66,7 +67,7 @@ public class FlightsFragment extends Fragment {
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 
-        binding = FragmentFlightsBinding.inflate(inflater, container, false);
+        binding = FlightsListFragmentBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         recyclerView = root.findViewById(R.id.recyclerview);
@@ -83,14 +84,16 @@ public class FlightsFragment extends Fragment {
 
     private void createNew(@NonNull View root) {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
+        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Got token " + token);
+
         if (token != null && !token.isEmpty()) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(MainActivity.API_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-            Call<Object> call = jsonPlaceholder.checkAccount(token);
+            AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+            Call<Object> call = airportAPI.checkAccount(token);
             call.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
@@ -126,8 +129,8 @@ public class FlightsFragment extends Fragment {
         if (flightList == null)
             flightList = new ArrayList<>();
 
-        JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-        Call<List<Flight>> call = jsonPlaceholder.listFlights(totalLoaded);
+        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+        Call<List<Flight>> call = airportAPI.listFlights(totalLoaded);
         call.enqueue(new Callback<List<Flight>>() {
             @Override
             public void onResponse(Call<List<Flight>> call, Response<List<Flight>> response) {

@@ -1,4 +1,6 @@
-package ru.serguun42.android.airportenhanced.api;
+package ru.serguun42.android.airportenhanced.domain.payload;
+
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
 
 public class FlightEditPayload {
     final String id;

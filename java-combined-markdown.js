@@ -4,12 +4,7 @@
  */
 
 const { join } = require("path");
-const { readdir, readFile, stat, writeFile } = require("fs");
-const { promisify } = require("util");
-const fsReadDir = promisify(readdir);
-const fsReadFile = promisify(readFile);
-const fsWriteFile = promisify(writeFile);
-const fsStats = promisify(stat);
+const { stat: fsStats, readdir: fsReadDir, readFile: fsReadFile, writeFile: fsWriteFile } = require("fs/promises");
 
 const JAVA_CODE_BASE_DIR = join("app", "src", "main", "java", "ru", "serguun42", "android", "airportenhanced");
 const LAYOUTS_BASE_DIR = join("app", "src", "main", "res", "layout");

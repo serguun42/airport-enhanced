@@ -21,9 +21,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightSingleAdapter;
-import ru.serguun42.android.airportenhanced.api.Flight;
-import ru.serguun42.android.airportenhanced.api.FlightDeletePayload;
-import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
+import ru.serguun42.android.airportenhanced.domain.payload.FlightDeletePayload;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
 import ru.serguun42.android.airportenhanced.databinding.ActivityPickBinding;
 import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
@@ -54,11 +54,8 @@ public class PickActivity extends AppCompatActivity {
 
         getSingleFlight(binding.getRoot());
 
-        if (binding.editFlight != null)
-            binding.editFlight.setOnClickListener(view -> gotoEdit(binding.getRoot()));
-
-        if (binding.deleteFlight != null)
-            binding.deleteFlight.setOnClickListener(view -> deleteSingleFlight(binding.getRoot()));
+        binding.editFlight.setOnClickListener(view -> gotoEdit(binding.getRoot()));
+        binding.deleteFlight.setOnClickListener(view -> deleteSingleFlight(binding.getRoot()));
     }
 
     private void getSingleFlight(@NonNull View root) {
@@ -70,8 +67,8 @@ public class PickActivity extends AppCompatActivity {
                 .build();
 
 
-        JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-        Call<Flight> call = jsonPlaceholder.getFlight(flightId);
+        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+        Call<Flight> call = airportAPI.getFlight(flightId);
         call.enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {
@@ -126,8 +123,8 @@ public class PickActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-        Call<Flight> call = jsonPlaceholder.deleteFlight(token, new FlightDeletePayload(flightId));
+        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+        Call<Flight> call = airportAPI.deleteFlight(token, new FlightDeletePayload(flightId));
         call.enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {

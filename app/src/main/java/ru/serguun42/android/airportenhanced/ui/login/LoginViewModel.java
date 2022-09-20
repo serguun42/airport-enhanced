@@ -12,9 +12,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.MainActivity;
-import ru.serguun42.android.airportenhanced.api.SuccessWithToken;
-import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
-import ru.serguun42.android.airportenhanced.api.UserPayload;
+import ru.serguun42.android.airportenhanced.domain.payload.SuccessWithToken;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
+import ru.serguun42.android.airportenhanced.domain.model.User;
 import ru.serguun42.android.airportenhanced.data.LoginRepository;
 import ru.serguun42.android.airportenhanced.data.Result;
 import ru.serguun42.android.airportenhanced.data.model.LoggedInUser;
@@ -43,13 +43,13 @@ public class LoginViewModel extends ViewModel {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
-        Call<SuccessWithToken> call = jsonPlaceholder.signIn(new UserPayload(username, password));
+        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+        Call<SuccessWithToken> call = airportAPI.signIn(new User(username, password));
         call.enqueue(new Callback<SuccessWithToken>() {
             @Override
             public void onResponse(Call<SuccessWithToken> call, Response<SuccessWithToken> response) {
                 if (response.code() == 404) {
-                    Call<SuccessWithToken> callRegister = jsonPlaceholder.signUp(new UserPayload(username, password));
+                    Call<SuccessWithToken> callRegister = airportAPI.signUp(new User(username, password));
                     callRegister.enqueue(new Callback<SuccessWithToken>() {
                         @Override
                         public void onResponse(Call<SuccessWithToken> callRegister, Response<SuccessWithToken> response) {

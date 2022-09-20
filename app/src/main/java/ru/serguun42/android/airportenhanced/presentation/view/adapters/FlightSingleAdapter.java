@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import ru.serguun42.android.airportenhanced.R;
-import ru.serguun42.android.airportenhanced.api.Flight;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
 
 public class FlightSingleAdapter extends RecyclerView.Adapter<FlightSingleAdapter.FlightViewHolder> {
     Context context;
