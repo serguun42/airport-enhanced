@@ -72,47 +72,38 @@ public class Flight {
     }
 
     public void setId(String id) {
-        System.out.println("id = " + id);
         this.id = id;
     }
 
     public void setIncoming(boolean incoming) {
-        System.out.println("incoming = " + incoming);
         this.incoming = incoming;
     }
 
     public void setTargetName(String target_name) {
-        System.out.println("target_name = " + target_name);
         this.target_name = target_name;
     }
 
     public void setTargetIATA(String target_iata) {
-        System.out.println("target_iata = " + target_iata);
         this.target_iata = target_iata;
     }
 
     public void setGate(String gate) {
-        System.out.println("gate = " + gate);
         this.gate = gate;
     }
 
     public void setFlightNumber(String flight_number) {
-        System.out.println("flight_number = " + flight_number);
         this.flight_number = flight_number;
     }
 
     public void setPlaneModel(String plane_model) {
-        System.out.println("plane_model = " + plane_model);
         this.plane_model = plane_model;
     }
 
     public void setDeparture(String departure) {
-        System.out.println("departure = " + departure);
         this.departure = departure;
     }
 
     public void setArrival(String arrival) {
-        System.out.println("arrival = " + arrival);
         this.arrival = arrival;
     }
 }

@@ -1,4 +1,4 @@
-package ru.serguun42.android.airportenhanced.adapters;
+package ru.serguun42.android.airportenhanced.presentation.view.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

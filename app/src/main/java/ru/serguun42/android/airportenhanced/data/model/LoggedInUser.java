@@ -4,7 +4,6 @@ package ru.serguun42.android.airportenhanced.data.model;
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
 public class LoggedInUser {
-
     private String userId;
     private String displayName;
 

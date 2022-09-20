@@ -1,6 +1,8 @@
 package ru.serguun42.android.airportenhanced.ui.main;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,16 +27,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.Editor;
 import ru.serguun42.android.airportenhanced.api.Flight;
-import ru.serguun42.android.airportenhanced.adapters.FlightListAdapter;
+import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightListAdapter;
 import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FragmentFlightsBinding;
+import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
 public class FlightsFragment extends Fragment {
     private static final String ARG_SECTION_TYPE = "is_incoming";
     private boolean isIncoming = false;
 
+    private SharedPreferences sharedPref;
     private FragmentFlightsBinding binding;
     private RecyclerView recyclerView;
     private List<Flight> flightList;
@@ -54,6 +58,7 @@ public class FlightsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         assert getArguments() != null;
         isIncoming = getArguments().getBoolean(ARG_SECTION_TYPE);
+        sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
     }
 
     @Override
@@ -70,17 +75,44 @@ public class FlightsFragment extends Fragment {
 
         loadMoreFlights(root);
 
-        if (binding.loadMore != null)
-            binding.loadMore.setOnClickListener(view -> loadMoreFlights(root));
-
-        if (binding.createNew != null)
-            binding.createNew.setOnClickListener(view -> createNew(root));
+        binding.loadMore.setOnClickListener(view -> loadMoreFlights(root));
+        binding.createNew.setOnClickListener(view -> createNew(root));
 
         return root;
     }
 
     private void createNew(@NonNull View root) {
-        root.getContext().startActivity(new Intent(root.getContext(), Editor.class));
+        String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
+        if (token != null && !token.isEmpty()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(MainActivity.API_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            JSONPlaceholder jsonPlaceholder = retrofit.create(JSONPlaceholder.class);
+            Call<Object> call = jsonPlaceholder.checkAccount(token);
+            call.enqueue(new Callback<Object>() {
+                @Override
+                public void onResponse(Call<Object> call, Response<Object> response) {
+                    if (!response.isSuccessful()) {
+                        gotoLogin(root);
+                        return;
+                    }
+
+                    root.getContext().startActivity(new Intent(root.getContext(), Editor.class));
+                }
+
+                @Override
+                public void onFailure(Call<Object> call, Throwable t) {
+                    gotoLogin(root);
+                }
+            });
+        } else
+            gotoLogin(root);
+    }
+
+    private void gotoLogin(@NonNull View root) {
+        root.getContext().startActivity(new Intent(root.getContext(), LoginActivity.class));
     }
 
     private void loadMoreFlights(@NonNull View root) {

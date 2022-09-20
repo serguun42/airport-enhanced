@@ -5,6 +5,8 @@ import android.app.Activity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -24,18 +26,18 @@ import android.widget.Toast;
 
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.ActivityLoginBinding;
-import ru.serguun42.android.airportenhanced.storage.Credentials;
-import ru.serguun42.android.airportenhanced.storage.SQLiteDatabaseHandler;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
+    private SharedPreferences sharedPref;
     private ActivityLoginBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sharedPref = getApplication().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -76,8 +78,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (loginResult.getSuccess() != null) {
                     String token = loginResult.getSuccess().getToken();
 
-                    SQLiteDatabaseHandler db = new SQLiteDatabaseHandler(LoginActivity.this);
-                    db.storeCredentials(new Credentials(token));
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.credentials_token_key), token);
+                    editor.apply();
 
                     updateUiWithUser(loginResult.getSuccess());
                 }

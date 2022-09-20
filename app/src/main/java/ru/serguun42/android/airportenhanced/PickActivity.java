@@ -1,6 +1,8 @@
 package ru.serguun42.android.airportenhanced;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,18 +20,17 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.serguun42.android.airportenhanced.adapters.FlightSingleAdapter;
+import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightSingleAdapter;
 import ru.serguun42.android.airportenhanced.api.Flight;
 import ru.serguun42.android.airportenhanced.api.FlightDeletePayload;
 import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
 import ru.serguun42.android.airportenhanced.databinding.ActivityPickBinding;
-import ru.serguun42.android.airportenhanced.storage.SQLiteDatabaseHandler;
 import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
 public class PickActivity extends AppCompatActivity {
     public static final String FLIGHT_ID_EXTRA_TYPE = "flight_id_extra_type";
 
-    private SQLiteDatabaseHandler db;
+    private SharedPreferences sharedPref;
     private ActivityPickBinding binding;
     private RecyclerView recyclerView;
     private String flightId;
@@ -39,7 +40,7 @@ public class PickActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = new SQLiteDatabaseHandler(this);
+        sharedPref = getApplication().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
         binding = ActivityPickBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -113,7 +114,8 @@ public class PickActivity extends AppCompatActivity {
 
     private void deleteSingleFlight(@NonNull View root) {
         if (flightId == null) return;
-        String token = db.getCredential().getToken();
+
+        String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
         if (token == null) {
             gotoLogin(root);
             return;

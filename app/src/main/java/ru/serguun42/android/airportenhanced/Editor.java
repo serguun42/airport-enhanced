@@ -3,7 +3,9 @@ package ru.serguun42.android.airportenhanced;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,13 +27,12 @@ import ru.serguun42.android.airportenhanced.api.Flight;
 import ru.serguun42.android.airportenhanced.api.FlightEditPayload;
 import ru.serguun42.android.airportenhanced.api.JSONPlaceholder;
 import ru.serguun42.android.airportenhanced.databinding.ActivityEditorBinding;
-import ru.serguun42.android.airportenhanced.storage.SQLiteDatabaseHandler;
 import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
 public class Editor extends AppCompatActivity {
     public static final String FLIGHT_ID_EXTRA_PARAM = "flight_id_extra_param";
 
-    private SQLiteDatabaseHandler db;
+    private SharedPreferences sharedPref;
     private ActivityEditorBinding binding;
     private String flightId;
     private Flight flight;
@@ -40,7 +41,7 @@ public class Editor extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = new SQLiteDatabaseHandler(this);
+        sharedPref = getApplication().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
         binding = ActivityEditorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
@@ -65,7 +66,7 @@ public class Editor extends AppCompatActivity {
     }
 
     private void save(@NonNull View root) {
-        String token = db.getCredential().getToken();
+        String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
         if (token == null) {
             gotoLogin(root);
             return;

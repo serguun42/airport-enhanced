@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Airport Enhanced</string>
+    <string name="shared_preferences_name_key">airport_shared_preferences_key</string>
+    <string name="credentials_token_key">credentials_token_key_string_access</string>
     <string name="incoming_flights">Incoming flights</string>
     <string name="departing_flights">Departing flights</string>
     <string name="weather">Weather</string>
@@ -19,7 +21,7 @@
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome, "</string>
     <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="invalid_password">Password cannot be empty</string>
     <string name="login_failed">"Login failed"</string>
     <string name="insufficient_rights">Insufficient rights</string>
     <string name="save">Save</string>
