@@ -1,4 +1,4 @@
-package ru.serguun42.android.airportenhanced.ui.main;
+package ru.serguun42.android.airportenhanced.presentation.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,14 +26,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.serguun42.android.airportenhanced.Editor;
+import ru.serguun42.android.airportenhanced.EditorActivity;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightListAdapter;
+import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightsListAdapter;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FlightsListFragmentBinding;
-import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
+import ru.serguun42.android.airportenhanced.LoginActivity;
 
 public class FlightsListFragment extends Fragment {
     private static final String ARG_SECTION_TYPE = "is_incoming";
@@ -84,7 +84,7 @@ public class FlightsListFragment extends Fragment {
 
     private void createNew(@NonNull View root) {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
-        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Got token " + token);
+        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Reading: get token " + token);
 
         if (token != null && !token.isEmpty()) {
             Retrofit retrofit = new Retrofit.Builder()
@@ -102,7 +102,7 @@ public class FlightsListFragment extends Fragment {
                         return;
                     }
 
-                    root.getContext().startActivity(new Intent(root.getContext(), Editor.class));
+                    root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class));
                 }
 
                 @Override
@@ -151,8 +151,8 @@ public class FlightsListFragment extends Fragment {
                 flightList = Stream.concat(flightList.stream(), response.body().stream())
                         .filter(flight -> flight.isIncoming() == isIncoming)
                         .collect(Collectors.toList());
-                FlightListAdapter flightListAdapter = new FlightListAdapter(root.getContext(), flightList);
-                recyclerView.setAdapter(flightListAdapter);
+                FlightsListAdapter flightsListAdapter = new FlightsListAdapter(root.getContext(), flightList);
+                recyclerView.setAdapter(flightsListAdapter);
             }
 
             @Override

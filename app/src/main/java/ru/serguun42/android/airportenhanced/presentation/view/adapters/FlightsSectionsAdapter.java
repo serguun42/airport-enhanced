@@ -1,4 +1,4 @@
-package ru.serguun42.android.airportenhanced.ui.main;
+package ru.serguun42.android.airportenhanced.presentation.view.adapters;
 
 import android.content.Context;
 
@@ -9,18 +9,18 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import ru.serguun42.android.airportenhanced.R;
+import ru.serguun42.android.airportenhanced.presentation.view.FlightsListFragment;
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class FlightsSectionsAdapter extends FragmentPagerAdapter {
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{
             R.string.incoming_flights,
-            R.string.departing_flights,
-//            R.string.weather
+            R.string.departing_flights
     };
     private final Context mContext;
 
-    public SectionsPagerAdapter(Context context, FragmentManager fm) {
+    public FlightsSectionsAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContext = context;
     }

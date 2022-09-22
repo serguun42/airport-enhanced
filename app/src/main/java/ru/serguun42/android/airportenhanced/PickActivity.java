@@ -20,12 +20,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightSingleAdapter;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.domain.payload.FlightDeletePayload;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
 import ru.serguun42.android.airportenhanced.databinding.ActivityPickBinding;
-import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
 public class PickActivity extends AppCompatActivity {
     public static final String FLIGHT_ID_EXTRA_TYPE = "flight_id_extra_type";
@@ -98,8 +97,8 @@ public class PickActivity extends AppCompatActivity {
     }
 
     private void gotoEdit(@NonNull View root) {
-        Intent intent = new Intent(root.getContext(), Editor.class);
-        intent.putExtra(Editor.FLIGHT_ID_EXTRA_PARAM, flightId);
+        Intent intent = new Intent(root.getContext(), EditorActivity.class);
+        intent.putExtra(EditorActivity.FLIGHT_ID_EXTRA_PARAM, flightId);
         root.getContext().startActivity(intent);
     }
 
@@ -124,7 +123,7 @@ public class PickActivity extends AppCompatActivity {
                 .build();
 
         AirportAPI airportAPI = retrofit.create(AirportAPI.class);
-        Call<Flight> call = airportAPI.deleteFlight(token, new FlightDeletePayload(flightId));
+        Call<Flight> call = airportAPI.deleteFlight(token, new APIMethods.FlightDeleteRequest(flightId));
         call.enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {

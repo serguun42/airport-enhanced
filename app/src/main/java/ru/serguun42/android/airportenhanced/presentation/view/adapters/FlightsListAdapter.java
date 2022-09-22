@@ -24,11 +24,11 @@ import ru.serguun42.android.airportenhanced.PickActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 
-public class FlightListAdapter extends RecyclerView.Adapter<FlightListAdapter.FlightViewHolder> {
+public class FlightsListAdapter extends RecyclerView.Adapter<FlightsListAdapter.FlightViewHolder> {
     Context context;
     List<Flight> flightList;
 
-    public FlightListAdapter(Context context, List<Flight> flightList) {
+    public FlightsListAdapter(Context context, List<Flight> flightList) {
         this.context = context;
         this.flightList = flightList;
     }

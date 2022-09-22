@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/editor"
-        tools:context=".Editor">
+        tools:context=".EditorActivity">
 
     <ScrollView
             app:layout_constraintTop_toTopOf="@id/editor"

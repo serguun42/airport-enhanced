@@ -25,12 +25,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.domain.payload.FlightEditPayload;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.AirportAPI;
 import ru.serguun42.android.airportenhanced.databinding.ActivityEditorBinding;
-import ru.serguun42.android.airportenhanced.ui.login.LoginActivity;
 
-public class Editor extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity {
     public static final String FLIGHT_ID_EXTRA_PARAM = "flight_id_extra_param";
 
     private SharedPreferences sharedPref;
@@ -68,7 +67,7 @@ public class Editor extends AppCompatActivity {
 
     private void save(@NonNull View root) {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
-        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Got token " + token);
+        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Reading: get token " + token);
 
         if (token == null) {
             gotoLogin(root);
@@ -96,7 +95,7 @@ public class Editor extends AppCompatActivity {
         Call<Object> call;
 
         if (flightId != null && !flightId.isEmpty())
-            call = airportAPI.editFlight(token, new FlightEditPayload(flightId, flight));
+            call = airportAPI.editFlight(token, new APIMethods.FlightEditRequest(flightId, flight));
         else
             call = airportAPI.createFlight(token, flight);
 
@@ -148,11 +147,10 @@ public class Editor extends AppCompatActivity {
         call.enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {
-                if (!response.isSuccessful()) {
+                if (!response.isSuccessful())
                     flight = new Flight();
-                }
-
-                flight = response.body();
+                else
+                    flight = response.body();
 
                 ((EditText) root.findViewById(R.id.target_name)).setText(flight.getTargetName());
                 ((EditText) root.findViewById(R.id.target_iata)).setText(flight.getTargetIATA());

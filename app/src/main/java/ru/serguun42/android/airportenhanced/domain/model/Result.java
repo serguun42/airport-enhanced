@@ -1,11 +1,12 @@
-package ru.serguun42.android.airportenhanced.data;
+package ru.serguun42.android.airportenhanced.domain.model;
 
 /**
  * A generic class that holds a result success w/ data or an error exception.
  */
 public class Result<T> {
     // hide the private constructor to limit subclass types (Success, Error)
-    private Result() {}
+    private Result() {
+    }
 
     // Success sub-class
     public final static class Success<T> extends Result {

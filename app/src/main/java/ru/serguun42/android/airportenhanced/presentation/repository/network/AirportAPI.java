@@ -9,12 +9,10 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.domain.model.User;
-import ru.serguun42.android.airportenhanced.domain.payload.FlightDeletePayload;
-import ru.serguun42.android.airportenhanced.domain.payload.FlightEditPayload;
-import ru.serguun42.android.airportenhanced.domain.payload.SuccessWithToken;
 
 public interface AirportAPI {
+    String API_BASE_URL = "https://airport.serguun42.ru/api/v1/";
+
     @GET("flights/list")
     Call<List<Flight>> listFlights(@Query("skip") int skip);
 
@@ -25,17 +23,17 @@ public interface AirportAPI {
     Call<Object> createFlight(@Header("X-Token") String token, @Body Flight body);
 
     @POST("flights/edit")
-    Call<Object> editFlight(@Header("X-Token") String token, @Body FlightEditPayload body);
+    Call<Object> editFlight(@Header("X-Token") String token, @Body APIMethods.FlightEditRequest body);
 
     @POST("flights/delete")
-    Call<Flight> deleteFlight(@Header("X-Token") String token, @Body FlightDeletePayload body);
+    Call<Flight> deleteFlight(@Header("X-Token") String token, @Body APIMethods.FlightDeleteRequest body);
 
     @GET("account/check")
     Call<Object> checkAccount(@Header("X-Token") String token);
 
     @POST("account/signin")
-    Call<SuccessWithToken> signIn(@Body User body);
+    Call<APIMethods.LoginResponse> signIn(@Body APIMethods.LoginRequestPayload body);
 
     @POST("account/signup")
-    Call<SuccessWithToken> signUp(@Body User body);
+    Call<APIMethods.LoginResponse> signUp(@Body APIMethods.LoginRequestPayload body);
 }
