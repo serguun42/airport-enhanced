@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 public class LoginResult {
     @Nullable
-    private UserLocal success;
+    private Session success;
     @Nullable
     private Integer error;
 
@@ -12,12 +12,12 @@ public class LoginResult {
         this.error = error;
     }
 
-    public LoginResult(@Nullable UserLocal success) {
+    public LoginResult(@Nullable Session success) {
         this.success = success;
     }
 
     @Nullable
-    public UserLocal getSuccess() {
+    public Session getSuccess() {
         return success;
     }
 

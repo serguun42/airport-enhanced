@@ -1,17 +1,23 @@
 package ru.serguun42.android.airportenhanced.presentation.repository.network;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.LoginResult;
-import ru.serguun42.android.airportenhanced.domain.model.UserLocal;
+import ru.serguun42.android.airportenhanced.domain.model.Session;
 
 public class APIMethods {
     private static AirportAPI api;
@@ -28,69 +34,46 @@ public class APIMethods {
         return api;
     }
 
-    public static class LoginRequestPayload {
-        String username;
-        String password;
+    public static LiveData<List<Flight>> listFlights(int skip) {
+        MutableLiveData<List<Flight>> flightsList = new MutableLiveData<>();
 
-        public LoginRequestPayload(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-    }
-
-    public static class LoginResponse {
-        private String token;
-
-        public String getToken() {
-            return token;
-        }
-    }
-
-    public static LiveData<LoginResult> loginWithAPI(String username, String password) {
-        MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-
-        getApi().signIn(new LoginRequestPayload(username, password)).enqueue(new Callback<LoginResponse>() {
+        getApi().listFlights(skip).enqueue(new Callback<List<Flight>>() {
             @Override
-            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                if (response.code() == 404) {
-                    getApi().signUp(new LoginRequestPayload(username, password)).enqueue(new Callback<LoginResponse>() {
-                        @Override
-                        public void onResponse(Call<LoginResponse> callRegister, Response<LoginResponse> response) {
-                            if (!response.isSuccessful()) {
-                                loginResult.setValue(new LoginResult(R.string.login_failed));
-                                return;
-                            }
-
-                            String token = response.body().getToken();
-
-                            loginResult.setValue(new LoginResult(new UserLocal(username, token)));
-                        }
-
-                        @Override
-                        public void onFailure(Call<LoginResponse> callRegister, Throwable t) {
-                            loginResult.setValue(new LoginResult(R.string.login_failed));
-                        }
-                    });
-                    return;
-                }
-
-                if (!response.isSuccessful()) {
-                    loginResult.setValue(new LoginResult(R.string.login_failed));
-                    return;
-                }
-
-                String token = response.body().getToken();
-
-                loginResult.setValue(new LoginResult(new UserLocal(username, token)));
+            public void onResponse(Call<List<Flight>> call, Response<List<Flight>> response) {
+                if (!response.isSuccessful())
+                    flightsList.setValue(Arrays.asList());
+                else
+                    flightsList.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<LoginResponse> call, Throwable t) {
-                loginResult.setValue(new LoginResult(R.string.login_failed));
+            public void onFailure(Call<List<Flight>> call, Throwable t) {
+                flightsList.setValue(Arrays.asList());
             }
         });
 
-        return loginResult;
+        return flightsList;
+    }
+
+    public static LiveData<Flight> getFlight(String flightId) {
+        MutableLiveData<Flight> flight = new MutableLiveData<>();
+
+        getApi().getFlight(flightId).enqueue(new Callback<Flight>() {
+            @Override
+            public void onResponse(Call<Flight> call, Response<Flight> response) {
+                if (!response.isSuccessful())
+                    flight.setValue(null);
+                else
+                    flight.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Flight> call, Throwable t) {
+                flight.setValue(null);
+            }
+        });
+
+        return flight;
     }
 
     public static class FlightDeleteRequest {
@@ -117,5 +100,119 @@ public class APIMethods {
         public String getId() {
             return id;
         }
+    }
+
+    public static class LoginRequestPayload {
+        String username;
+        String password;
+
+        public LoginRequestPayload(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+    }
+
+    public static LiveData<LoginResult> signIn(String username, String password) {
+        MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+
+        getApi().signIn(new LoginRequestPayload(username, password)).enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(Call<Session> call, Response<Session> response) {
+                if (response.code() == 404) {
+                    getApi().signUp(new LoginRequestPayload(username, password)).enqueue(new Callback<Session>() {
+                        @Override
+                        public void onResponse(Call<Session> callRegister, Response<Session> response) {
+                            if (!response.isSuccessful()) {
+                                loginResult.setValue(new LoginResult(R.string.login_failed));
+                                return;
+                            }
+
+                            Session session = response.body();
+                            Log.d(MainActivity.MAIN_LOG_TAG, "New " + session);
+                            loginResult.setValue(new LoginResult(session));
+                        }
+
+                        @Override
+                        public void onFailure(Call<Session> callRegister, Throwable t) {
+                            loginResult.setValue(new LoginResult(R.string.login_failed));
+                        }
+                    });
+                    return;
+                }
+
+                if (!response.isSuccessful()) {
+                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                    return;
+                }
+
+                Session session = response.body();
+                Log.d(MainActivity.MAIN_LOG_TAG, "New " + session);
+                loginResult.setValue(new LoginResult(session));
+            }
+
+            @Override
+            public void onFailure(Call<Session> call, Throwable t) {
+                loginResult.setValue(new LoginResult(R.string.login_failed));
+            }
+        });
+
+        return loginResult;
+    }
+
+    public static class AccountCheckResponse {
+        private boolean success;
+
+        public boolean isSuccess() {
+            return success;
+        }
+    }
+
+    public static LiveData<Boolean> checkSession(String token) {
+        MutableLiveData<Boolean> checkSuccessful = new MutableLiveData<>();
+        if (token == null || token.isEmpty()) {
+            checkSuccessful.setValue(false);
+            return checkSuccessful;
+        }
+
+        getApi().checkAccount(token).enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(Call<Session> call, Response<Session> response) {
+                checkSuccessful.setValue(response.isSuccessful());
+            }
+
+            @Override
+            public void onFailure(Call<Session> call, Throwable t) {
+                checkSuccessful.setValue(false);
+            }
+        });
+
+        return checkSuccessful;
+    }
+
+    public static LiveData<Boolean> checkEditPermission(String token) {
+        MutableLiveData<Boolean> checkSuccessful = new MutableLiveData<>();
+        if (token == null || token.isEmpty()) {
+            checkSuccessful.setValue(false);
+            return checkSuccessful;
+        }
+
+        getApi().checkAccount(token).enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(Call<Session> call, Response<Session> response) {
+                if (!response.isSuccessful()) {
+                    checkSuccessful.setValue(false);
+                    return;
+                }
+
+                checkSuccessful.setValue(response.body().canEdit());
+            }
+
+            @Override
+            public void onFailure(Call<Session> call, Throwable t) {
+                checkSuccessful.setValue(false);
+            }
+        });
+
+        return checkSuccessful;
     }
 }

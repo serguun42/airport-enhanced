@@ -25,9 +25,12 @@ public class LoginViewModel extends ViewModel {
     }
 
     public void loginWithAPI(String username, String password) {
-        APIMethods.loginWithAPI(username, password).observeForever(loginResultFromAPI -> {
-            Log.d(MainActivity.LIVE_DATA_LOG_TAG, "Username from loginResultFromAPI = " + loginResultFromAPI.getSuccess().getUsername());
-            Log.d(MainActivity.LIVE_DATA_LOG_TAG, "Token from loginResultFromAPI = " + loginResultFromAPI.getSuccess().getToken());
+        APIMethods.signIn(username, password).observeForever(loginResultFromAPI -> {
+            if (loginResultFromAPI.getSuccess() != null)
+                Log.d(MainActivity.MAIN_LOG_TAG, "loginResultFromAPI: " + loginResultFromAPI.getSuccess());
+            else
+                Log.d(MainActivity.MAIN_LOG_TAG, "Error in loginResultFromAPI: " + loginResultFromAPI.getError());
+
             loginResult.setValue(loginResultFromAPI);
         });
     }

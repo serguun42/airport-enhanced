@@ -6,24 +6,13 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <androidx.viewpager.widget.ViewPager
-            android:id="@+id/view_pager"
+    <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <com.google.android.material.appbar.AppBarLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:theme="@style/Theme.AirportEnhanced.AppBarOverlay">
-
-        <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:tabMode="fixed"
-                app:tabMaxWidth="0dp"
-                app:tabGravity="fill" />
-    </com.google.android.material.appbar.AppBarLayout>
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

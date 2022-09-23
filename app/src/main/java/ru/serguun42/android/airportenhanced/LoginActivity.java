@@ -22,7 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import ru.serguun42.android.airportenhanced.databinding.ActivityLoginBinding;
-import ru.serguun42.android.airportenhanced.domain.model.UserLocal;
+import ru.serguun42.android.airportenhanced.domain.model.Session;
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.LoginViewModel;
 
 public class LoginActivity extends AppCompatActivity {
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             if (loginResult.getSuccess() != null) {
                 String token = loginResult.getSuccess().getToken();
 
-                Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Editing: set token to " + token);
+                Log.d(MainActivity.MAIN_LOG_TAG, "Editing: set token to " + token);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.credentials_token_key), token);
                 editor.apply();
@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(UserLocal model) {
+    private void updateUiWithUser(Session model) {
         String welcome = getString(R.string.welcome) + model.getUsername();
         Toast.makeText(getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
     }

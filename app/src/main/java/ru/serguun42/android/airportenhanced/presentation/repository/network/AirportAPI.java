@@ -9,9 +9,10 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
+import ru.serguun42.android.airportenhanced.domain.model.Session;
 
 public interface AirportAPI {
-    String API_BASE_URL = "https://airport.serguun42.ru/api/v1/";
+    String API_BASE_URL = "https://airport.serguun42.ru/api/v1.1/";
 
     @GET("flights/list")
     Call<List<Flight>> listFlights(@Query("skip") int skip);
@@ -29,11 +30,11 @@ public interface AirportAPI {
     Call<Flight> deleteFlight(@Header("X-Token") String token, @Body APIMethods.FlightDeleteRequest body);
 
     @GET("account/check")
-    Call<Object> checkAccount(@Header("X-Token") String token);
+    Call<Session> checkAccount(@Header("X-Token") String token);
 
     @POST("account/signin")
-    Call<APIMethods.LoginResponse> signIn(@Body APIMethods.LoginRequestPayload body);
+    Call<Session> signIn(@Body APIMethods.LoginRequestPayload body);
 
     @POST("account/signup")
-    Call<APIMethods.LoginResponse> signUp(@Body APIMethods.LoginRequestPayload body);
+    Call<Session> signUp(@Body APIMethods.LoginRequestPayload body);
 }

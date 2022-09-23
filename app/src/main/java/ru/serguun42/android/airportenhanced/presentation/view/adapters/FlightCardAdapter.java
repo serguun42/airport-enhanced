@@ -1,0 +1,118 @@
+package ru.serguun42.android.airportenhanced.presentation.view.adapters;
+
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
+
+import ru.serguun42.android.airportenhanced.MainActivity;
+import ru.serguun42.android.airportenhanced.R;
+import ru.serguun42.android.airportenhanced.databinding.FlightCardBinding;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
+import ru.serguun42.android.airportenhanced.presentation.view.FlightDetailsFragment;
+
+public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.FlightViewHolder> {
+    MainActivity mainActivity;
+    List<Flight> flightList;
+    boolean clickable;
+
+    public FlightCardAdapter(MainActivity mainActivity, List<Flight> flightList) {
+        this.mainActivity = mainActivity;
+        this.flightList = flightList;
+        this.clickable = true;
+    }
+
+    public FlightCardAdapter(MainActivity mainActivity, List<Flight> flightList, boolean clickable) {
+        this.mainActivity = mainActivity;
+        this.flightList = flightList;
+        this.clickable = clickable;
+    }
+
+    @NonNull
+    @Override
+    public FlightViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        FlightCardBinding binding = FlightCardBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        return new FlightViewHolder(binding);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint({"UseCompatLoadingForDrawables", "SimpleDateFormat", "SetTextI18n"})
+    @Override
+    public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {
+        Flight flight = flightList.get(position);
+
+
+        try {
+            Date departureDate = Date.from(
+                    Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getDeparture()))
+            );
+            holder.binding.cardTimeDeparture.setText(new SimpleDateFormat("HH:mm").format(departureDate));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            Date arrivalDate = Date.from(
+                    Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getArrival()))
+            );
+            holder.binding.cardTimeArrival.setText(new SimpleDateFormat("HH:mm").format(arrivalDate));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        holder.binding.cardTitle.setText(flight.getTargetIATA() + " – " + flight.getTargetName());
+
+        holder.binding.cardIcon.setImageDrawable(
+                mainActivity.getDrawable(flight.isIncoming() ?
+                        R.drawable.ic_baseline_flight_land_24 :
+                        R.drawable.ic_baseline_flight_takeoff_24)
+        );
+        holder.binding.cardIcon.setColorFilter(
+                mainActivity.getColor(flight.isIncoming() ?
+                        R.color.blue_800 :
+                        R.color.red_800),
+                android.graphics.PorterDuff.Mode.SRC_IN
+        );
+
+        holder.binding.cardFlightNumber.setText(flight.getFlightNumber());
+        holder.binding.cardGate.setText(flight.getGate());
+        holder.binding.cardPlaneModel.setText(flight.getPlaneModel());
+
+        if (this.clickable)
+            holder.binding.flightCard.setOnClickListener(view -> {
+                Bundle bundle = new Bundle();
+                bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_TYPE, flight.getId());
+
+                Navigation.findNavController(mainActivity.binding.navHostFragment)
+                        .navigate(R.id.action_flightsList_to_flightDetails, bundle);
+            });
+    }
+
+    @Override
+    public int getItemCount() {
+        return flightList.size();
+    }
+
+    public static class FlightViewHolder extends RecyclerView.ViewHolder {
+        FlightCardBinding binding;
+
+        public FlightViewHolder(@NonNull FlightCardBinding binding) {
+            super(binding.getRoot());
+
+            this.binding = binding;
+        }
+    }
+}

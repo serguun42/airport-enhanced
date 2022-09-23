@@ -67,7 +67,7 @@ public class EditorActivity extends AppCompatActivity {
 
     private void save(@NonNull View root) {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
-        Log.d(MainActivity.SHARED_PREFS_LOG_TAG, "Reading: get token " + token);
+        Log.d(MainActivity.MAIN_LOG_TAG, "Reading: get token " + token);
 
         if (token == null) {
             gotoLogin(root);
