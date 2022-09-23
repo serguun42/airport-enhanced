@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import ru.serguun42.android.airportenhanced.R;
+import ru.serguun42.android.airportenhanced.presentation.view.AccountFragment;
 import ru.serguun42.android.airportenhanced.presentation.view.FlightsTypeFragment;
 
 public class FlightsTypesSectionsAdapter extends FragmentStateAdapter {
@@ -15,7 +16,7 @@ public class FlightsTypesSectionsAdapter extends FragmentStateAdapter {
     public static final int[] TAB_TITLES = new int[]{
             R.string.incoming_flights,
             R.string.departing_flights,
-//            R.string.account_tab,
+            R.string.account_tab,
     };
 
     public FlightsTypesSectionsAdapter(Fragment fragment) {
@@ -25,6 +26,8 @@ public class FlightsTypesSectionsAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        if (position == 2) return new AccountFragment();
+
         Fragment fragment = new FlightsTypeFragment();
         Bundle args = new Bundle();
         args.putBoolean(FlightsTypeFragment.SECTION_TYPE_EXTRA_KEY, position == 0);

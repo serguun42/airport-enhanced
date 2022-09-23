@@ -37,4 +37,7 @@ public interface AirportAPI {
 
     @POST("account/signup")
     Call<Session> signUp(@Body APIMethods.LoginRequestPayload body);
+
+    @POST("account/signout")
+    Call<Session> signOut(@Header("X-Token") String token);
 }

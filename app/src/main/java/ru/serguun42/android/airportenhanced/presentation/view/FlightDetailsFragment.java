@@ -24,6 +24,7 @@ import ru.serguun42.android.airportenhanced.EditorActivity;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FlightDetailsFragmentBinding;
+import ru.serguun42.android.airportenhanced.domain.model.Session;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightDetailedCardAdapter;
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightDetailsViewModel;
@@ -77,18 +78,16 @@ public class FlightDetailsFragment extends Fragment {
     }
 
     private void checkAccountAndMakeCreateButton() {
-        boolean canEdit = sharedPref.getBoolean(getString(R.string.credentials_can_edit_key), false);
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
         Log.d(MainActivity.MAIN_LOG_TAG, "Reading: get token " + token);
 
-        switchCreateButton(canEdit);
-        APIMethods.checkEditPermission(token).observe(getViewLifecycleOwner(), this::switchCreateButton);
+        viewModel.checkSession(token).observe(getViewLifecycleOwner(), this::switchCreateButton);
     }
 
-    private void switchCreateButton(boolean showButton) {
+    private void switchCreateButton(Session session) {
         View root = binding.getRoot();
 
-        if (showButton) {
+        if (session.canEdit()) {
             binding.controlButtons.setVisibility(View.VISIBLE);
             binding.editFlight.setOnClickListener(view ->
                     root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class))

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -21,18 +22,22 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import ru.serguun42.android.airportenhanced.EditorActivity;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
-import ru.serguun42.android.airportenhanced.databinding.FlightsFragmentBinding;
+import ru.serguun42.android.airportenhanced.databinding.FlightsListFragmentBinding;
+import ru.serguun42.android.airportenhanced.domain.model.Session;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightsTypesSectionsAdapter;
+import ru.serguun42.android.airportenhanced.presentation.viewmodel.AccountViewModel;
+import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightsListViewModel;
 
-public class FlightsFragment extends Fragment {
+public class FlightsListFragment extends Fragment {
     FlightsTypesSectionsAdapter sectionsAdapter;
 
     private SharedPreferences sharedPref;
-    private FlightsFragmentBinding binding;
+    private FlightsListFragmentBinding binding;
+    private FlightsListViewModel viewModel;
 
-    public static FlightsFragment newInstance() {
-        return new FlightsFragment();
+    public static FlightsListFragment newInstance() {
+        return new FlightsListFragment();
     }
 
     @Override
@@ -43,9 +48,7 @@ public class FlightsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
-        binding = FlightsFragmentBinding.inflate(getLayoutInflater(), container, false);
-
-        checkAccountAndMakeCreateButton();
+        binding = FlightsListFragmentBinding.inflate(getLayoutInflater(), container, false);
 
         return binding.getRoot();
     }
@@ -63,19 +66,25 @@ public class FlightsFragment extends Fragment {
         ).attach();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        viewModel = new ViewModelProvider(this).get(FlightsListViewModel.class);
+        checkAccountAndMakeCreateButton();
+    }
+
     private void checkAccountAndMakeCreateButton() {
-        boolean canEdit = sharedPref.getBoolean(getString(R.string.credentials_can_edit_key), false);
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
         Log.d(MainActivity.MAIN_LOG_TAG, "Reading: get token " + token);
 
-        switchCreateButton(canEdit);
-        APIMethods.checkEditPermission(token).observe(getViewLifecycleOwner(), this::switchCreateButton);
+        viewModel.checkSession(token).observe(getViewLifecycleOwner(), this::switchCreateButton);
     }
 
-    private void switchCreateButton(boolean showButton) {
+    private void switchCreateButton(Session session) {
         View root = binding.getRoot();
 
-        if (showButton) {
+        if (session.canEdit()) {
             binding.createNew.setVisibility(View.VISIBLE);
             binding.createNew.setOnClickListener(view ->
                     root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class))

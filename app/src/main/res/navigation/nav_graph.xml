@@ -7,9 +7,9 @@
 
     <fragment
             android:id="@+id/flightsList"
-            android:name="ru.serguun42.android.airportenhanced.presentation.view.FlightsFragment"
+            android:name="ru.serguun42.android.airportenhanced.presentation.view.FlightsListFragment"
             android:label="flightsFragment"
-            tools:layout="@layout/flights_fragment">
+            tools:layout="@layout/flights_list_fragment">
         <action
                 android:id="@+id/action_flightsList_to_flightDetails"
                 app:destination="@id/flightDetails"

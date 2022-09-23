@@ -160,22 +160,25 @@ public class APIMethods {
         return loginResult;
     }
 
-    public static LiveData<Boolean> checkSession(String token) {
-        MutableLiveData<Boolean> checkSuccessful = new MutableLiveData<>();
+    public static LiveData<Session> checkSession(String token) {
+        MutableLiveData<Session> checkSuccessful = new MutableLiveData<>();
         if (token == null || token.isEmpty()) {
-            checkSuccessful.setValue(false);
+            checkSuccessful.setValue(new Session());
             return checkSuccessful;
         }
 
         getApi().checkAccount(token).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
-                checkSuccessful.setValue(response.isSuccessful());
+                if (!response.isSuccessful())
+                    checkSuccessful.setValue(new Session());
+                else
+                    checkSuccessful.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                checkSuccessful.setValue(false);
+                checkSuccessful.setValue(new Session());
             }
         });
 
@@ -207,5 +210,32 @@ public class APIMethods {
         });
 
         return checkSuccessful;
+    }
+
+    public static LiveData<Session> signOut(String token) {
+        MutableLiveData<Session> signOutSuccess = new MutableLiveData<>();
+        if (token == null || token.isEmpty()) {
+            signOutSuccess.setValue(new Session());
+            return signOutSuccess;
+        }
+
+        getApi().signOut(token).enqueue(new Callback<Session>() {
+            @Override
+            public void onResponse(Call<Session> call, Response<Session> response) {
+                if (!response.isSuccessful()) {
+                    signOutSuccess.setValue(new Session());
+                    return;
+                }
+
+                signOutSuccess.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<Session> call, Throwable t) {
+                signOutSuccess.setValue(new Session());
+            }
+        });
+
+        return signOutSuccess;
     }
 }

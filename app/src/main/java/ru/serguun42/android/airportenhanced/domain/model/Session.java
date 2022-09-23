@@ -6,6 +6,13 @@ public class Session {
     private String token;
     private boolean can_edit;
 
+    public Session() {
+        this.success = false;
+        this.username = "";
+        this.token = "";
+        this.can_edit = false;
+    }
+
     public Session(boolean success, String username, String token, boolean can_edit) {
         this.success = success;
         this.username = username;

@@ -4,10 +4,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.view.FlightsFragment">
+        tools:context=".presentation.view.FlightsListFragment">
 
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -31,7 +31,7 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_new"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.view.AccountFragment">
+
+    <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/session_info_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="6dp"
+                android:id="@+id/flight_card"
+                android:layout_margin="8dp"
+                android:padding="16dp"
+                android:background="@drawable/custom_ripple">
+
+            <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp">
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="6dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text=""
+                            android:textFontWeight="500"
+                            android:textColor="@color/details_field_desc"
+                            android:textSize="16dp" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/current_session"
+                            android:textFontWeight="500"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:layout_weight="1"
+                            android:paddingRight="16dp" />
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text="@string/user_short"
+                            android:textFontWeight="500"
+                            android:textColor="@color/details_field_desc"
+                            android:textSize="16dp" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="–"
+                            android:textFontWeight="900"
+                            android:ellipsize="end"
+                            android:textColor="@color/black"
+                            android:textSize="24dp"
+                            android:layout_weight="1"
+                            android:id="@+id/session_username" />
+                </TableRow>
+
+                <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingTop="16dp">
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text="@string/can_edit_short"
+                            android:textFontWeight="500"
+                            android:textColor="@color/details_field_desc"
+                            android:textSize="16dp" />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/no"
+                            android:textFontWeight="500"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            android:layout_weight="1"
+                            android:id="@+id/session_can_edit" />
+                </TableRow>
+            </TableLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/logout_button"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/fab_margin"
+                android:layout_marginBottom="@dimen/fab_margin"
+                android:textColor="@color/black"
+                android:text="@string/logout"
+                android:layout_gravity="center|bottom"
+                app:icon="@drawable/ic_baseline_login_24" />
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/login_button"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:textColor="@color/black"
+            android:text="@string/login"
+            android:layout_gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:icon="@drawable/ic_baseline_login_24" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
