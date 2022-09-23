@@ -6,34 +6,31 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 
 public class FlightsTypeViewModel extends ViewModel {
-    private MutableLiveData<Boolean> canLoadMoreFlights = new MutableLiveData<>(true);
-    private MutableLiveData<List<Flight>> allFlightList = new MutableLiveData<>(Arrays.asList());
-    private MutableLiveData<List<Flight>> filteredFlightsList = new MutableLiveData<>(Arrays.asList());
-    private boolean isIncoming = true;
+    private final MutableLiveData<Boolean> canLoadMoreFlights = new MutableLiveData<>(true);
+    private final MutableLiveData<List<Flight>> allFlightList = new MutableLiveData<>(Collections.emptyList());
+    private final MutableLiveData<List<Flight>> filteredFlightsList = new MutableLiveData<>(Collections.emptyList());
+    private final boolean isIncoming;
 
     public FlightsTypeViewModel(boolean isIncoming) {
         this.isIncoming = isIncoming;
+        loadMoreFlights();
     }
 
     public LiveData<List<Flight>> getFlights() {
-        if (canLoadMoreFlights.getValue() && allFlightList.getValue().size() == 0)
-            loadMoreFlights();
-
         return filteredFlightsList;
     }
 
     public void loadMoreFlights() {
-        if (!canLoadMoreFlights.getValue()) return;
+        if (Boolean.FALSE.equals(canLoadMoreFlights.getValue())) return;
 
         APIMethods.listFlights(allFlightList.getValue().size()).observeForever(flightsFromAPI -> {
             if (flightsFromAPI.size() == 0)

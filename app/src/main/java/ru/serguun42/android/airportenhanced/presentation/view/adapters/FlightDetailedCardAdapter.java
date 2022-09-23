@@ -2,13 +2,11 @@ package ru.serguun42.android.airportenhanced.presentation.view.adapters;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
@@ -19,25 +17,22 @@ import java.util.List;
 
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
-import ru.serguun42.android.airportenhanced.databinding.FlightCardBinding;
+import ru.serguun42.android.airportenhanced.databinding.FlightDetailedCardBinding;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.presentation.view.FlightDetailsFragment;
 
-public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.FlightViewHolder> {
+public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetailedCardAdapter.FlightViewHolder> {
     MainActivity mainActivity;
     List<Flight> flightList;
-    boolean clickable;
 
-    public FlightCardAdapter(MainActivity mainActivity, List<Flight> flightList) {
+    public FlightDetailedCardAdapter(MainActivity mainActivity, List<Flight> flightList) {
         this.mainActivity = mainActivity;
         this.flightList = flightList;
-        this.clickable = true;
     }
 
     @NonNull
     @Override
     public FlightViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        FlightCardBinding binding = FlightCardBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        FlightDetailedCardBinding binding = FlightDetailedCardBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new FlightViewHolder(binding);
     }
 
@@ -52,7 +47,7 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
             Date departureDate = Date.from(
                     Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getDeparture()))
             );
-            holder.binding.cardTimeDeparture.setText(new SimpleDateFormat("HH:mm").format(departureDate));
+            holder.binding.detailedTimeDeparture.setText(new SimpleDateFormat("EEE, MMM d HH:mm").format(departureDate));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,37 +56,34 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
             Date arrivalDate = Date.from(
                     Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getArrival()))
             );
-            holder.binding.cardTimeArrival.setText(new SimpleDateFormat("HH:mm").format(arrivalDate));
+            holder.binding.detailedTimeArriving.setText(new SimpleDateFormat("EEE, MMM d HH:mm").format(arrivalDate));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        holder.binding.cardTitle.setText(flight.getTargetIATA() + " – " + flight.getTargetName());
+        holder.binding.detailedTarget.setText(flight.getTargetIATA() + " – " + flight.getTargetName());
 
-        holder.binding.cardIcon.setImageDrawable(
+        holder.binding.detailedIcon.setImageDrawable(
                 mainActivity.getDrawable(flight.isIncoming() ?
                         R.drawable.ic_baseline_flight_land_24 :
                         R.drawable.ic_baseline_flight_takeoff_24)
         );
-        holder.binding.cardIcon.setColorFilter(
+        holder.binding.detailedIcon.setColorFilter(
                 mainActivity.getColor(flight.isIncoming() ?
                         R.color.blue_800 :
                         R.color.red_800),
                 android.graphics.PorterDuff.Mode.SRC_IN
         );
 
-        holder.binding.cardFlightNumber.setText(flight.getFlightNumber());
-        holder.binding.cardGate.setText(flight.getGate());
-        holder.binding.cardPlaneModel.setText(flight.getPlaneModel());
+        holder.binding.detailedFlightType.setText(
+                mainActivity.getString(flight.isIncoming() ?
+                        R.string.incoming_type :
+                        R.string.departing_type)
+        );
 
-        if (this.clickable)
-            holder.binding.flightCard.setOnClickListener(view -> {
-                Bundle bundle = new Bundle();
-                bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_KEY, flight.getId());
-
-                Navigation.findNavController(mainActivity.binding.navHostFragment)
-                        .navigate(R.id.action_flightsList_to_flightDetails, bundle);
-            });
+        holder.binding.detailedFlightNumber.setText(flight.getFlightNumber());
+        holder.binding.detailedGate.setText(flight.getGate());
+        holder.binding.detailedPlaneModel.setText(flight.getPlaneModel());
     }
 
     @Override
@@ -100,9 +92,9 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
     }
 
     public static class FlightViewHolder extends RecyclerView.ViewHolder {
-        FlightCardBinding binding;
+        FlightDetailedCardBinding binding;
 
-        public FlightViewHolder(@NonNull FlightCardBinding binding) {
+        public FlightViewHolder(@NonNull FlightDetailedCardBinding binding) {
             super(binding.getRoot());
 
             this.binding = binding;

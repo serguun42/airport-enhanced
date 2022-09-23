@@ -1,7 +1,6 @@
 package ru.serguun42.android.airportenhanced.presentation.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightsTypeVi
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightsTypeViewModelFactory;
 
 public class FlightsTypeFragment extends Fragment {
-    public static final String ARG_SECTION_TYPE = "is_incoming";
+    public static final String SECTION_TYPE_EXTRA_KEY = "section_type_extra_key";
     private boolean isIncoming = false;
 
     private FlightsTypeFragmentBinding binding;
@@ -40,7 +39,7 @@ public class FlightsTypeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         assert getArguments() != null;
-        isIncoming = getArguments().getBoolean(ARG_SECTION_TYPE);
+        isIncoming = getArguments().getBoolean(SECTION_TYPE_EXTRA_KEY);
     }
 
     @Override
@@ -48,7 +47,6 @@ public class FlightsTypeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = new ViewModelProvider(this, new FlightsTypeViewModelFactory(isIncoming)).get(FlightsTypeViewModel.class);
-
         viewModel.getFlights().observe(getViewLifecycleOwner(), flights -> {
             binding.recyclerview.setAdapter(new FlightCardAdapter((MainActivity) getActivity(), flights));
         });

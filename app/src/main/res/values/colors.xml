@@ -17,4 +17,5 @@
     <color name="blue_800">#FF0277BD</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="details_field_desc">#FFAAAAAA</color>
 </resources>

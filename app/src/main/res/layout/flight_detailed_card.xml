@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="6dp"
+        android:id="@+id/flight_card"
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        android:background="@drawable/custom_ripple">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:background="@drawable/custom_ripple">
+
+        <ImageView
+                android:id="@+id/detailed_icon"
+                android:adjustViewBounds="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                app:tint="@color/teal_600"
+                android:src="@drawable/ic_baseline_flight_land_24" />
+    </RelativeLayout>
+
+    <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="12dp">
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="6dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text=""
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/incoming_type"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:paddingRight="16dp"
+                    android:id="@+id/detailed_flight_type" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/from"
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YYY – Neverland"
+                    android:textFontWeight="900"
+                    android:ellipsize="end"
+                    android:textColor="@color/black"
+                    android:textSize="24dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_target" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="16dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/flight_number"
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IR4200"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_flight_number" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/plane_model"
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A320"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_plane_model" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/gate"
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A01"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_gate" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/departing_time"
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12:00"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_time_departure" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/arriving_time"
+                    android:textFontWeight="500"
+                    android:textColor="@color/details_field_desc"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12:00"
+                    android:textFontWeight="400"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_time_arriving" />
+        </TableRow>
+    </TableLayout>
+
+</androidx.cardview.widget.CardView>

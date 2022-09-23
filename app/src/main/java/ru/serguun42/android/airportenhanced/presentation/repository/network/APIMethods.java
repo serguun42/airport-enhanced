@@ -2,10 +2,11 @@ package ru.serguun42.android.airportenhanced.presentation.repository.network;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,16 +40,16 @@ public class APIMethods {
 
         getApi().listFlights(skip).enqueue(new Callback<List<Flight>>() {
             @Override
-            public void onResponse(Call<List<Flight>> call, Response<List<Flight>> response) {
+            public void onResponse(@NonNull Call<List<Flight>> call, Response<List<Flight>> response) {
                 if (!response.isSuccessful())
-                    flightsList.setValue(Arrays.asList());
+                    flightsList.setValue(Collections.emptyList());
                 else
                     flightsList.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<List<Flight>> call, Throwable t) {
-                flightsList.setValue(Arrays.asList());
+                flightsList.setValue(Collections.emptyList());
             }
         });
 
@@ -62,14 +63,14 @@ public class APIMethods {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
-                    flight.setValue(null);
+                    flight.setValue(new Flight());
                 else
                     flight.setValue(response.body());
             }
 
             @Override
             public void onFailure(Call<Flight> call, Throwable t) {
-                flight.setValue(null);
+                flight.setValue(new Flight());
             }
         });
 
@@ -157,14 +158,6 @@ public class APIMethods {
         });
 
         return loginResult;
-    }
-
-    public static class AccountCheckResponse {
-        private boolean success;
-
-        public boolean isSuccess() {
-            return success;
-        }
     }
 
     public static LiveData<Boolean> checkSession(String token) {

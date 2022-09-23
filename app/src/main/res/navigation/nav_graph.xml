@@ -14,7 +14,7 @@
                 android:id="@+id/action_flightsList_to_flightDetails"
                 app:destination="@id/flightDetails"
                 app:enterAnim="@android:anim/slide_in_left"
-                app:exitAnim="@android:anim/slide_out_right"
+                app:exitAnim="@android:anim/fade_out"
                 app:popEnterAnim="@android:anim/slide_in_left"
                 app:popExitAnim="@android:anim/slide_out_right"
                 app:popUpToSaveState="true" />

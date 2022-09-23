@@ -27,7 +27,7 @@ public class FlightsTypesSectionsAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         Fragment fragment = new FlightsTypeFragment();
         Bundle args = new Bundle();
-        args.putBoolean(FlightsTypeFragment.ARG_SECTION_TYPE, position == 0);
+        args.putBoolean(FlightsTypeFragment.SECTION_TYPE_EXTRA_KEY, position == 0);
         fragment.setArguments(args);
         return fragment;
     }
