@@ -18,6 +18,14 @@
                 app:popEnterAnim="@android:anim/slide_in_left"
                 app:popExitAnim="@android:anim/slide_out_right"
                 app:popUpToSaveState="true" />
+        <action
+                android:id="@+id/action_flightsList_to_login"
+                app:destination="@id/login"
+                app:enterAnim="@android:anim/slide_in_left"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/slide_in_left"
+                app:popExitAnim="@android:anim/slide_out_right"
+                app:popUpToSaveState="true" />
     </fragment>
 
     <fragment
@@ -25,4 +33,10 @@
             android:name="ru.serguun42.android.airportenhanced.presentation.view.FlightDetailsFragment"
             android:label="flightDetails"
             tools:layout="@layout/flight_details_fragment" />
+
+    <fragment
+            android:id="@+id/login"
+            android:name="ru.serguun42.android.airportenhanced.presentation.view.LoginFragment"
+            android:label="login"
+            tools:layout="@layout/login_fragment" />
 </navigation>

@@ -21,13 +21,13 @@ public interface AirportAPI {
     Call<Flight> getFlight(@Query("id") String id);
 
     @POST("flights/create")
-    Call<Object> createFlight(@Header("X-Token") String token, @Body Flight body);
+    Call<APIMethods.FlightChangeResponse> createFlight(@Header("X-Token") String token, @Body Flight body);
 
     @POST("flights/edit")
-    Call<Object> editFlight(@Header("X-Token") String token, @Body APIMethods.FlightEditRequest body);
+    Call<APIMethods.FlightChangeResponse> editFlight(@Header("X-Token") String token, @Body APIMethods.FlightEditRequest body);
 
     @POST("flights/delete")
-    Call<Flight> deleteFlight(@Header("X-Token") String token, @Body APIMethods.FlightDeleteRequest body);
+    Call<APIMethods.FlightChangeResponse> deleteFlight(@Header("X-Token") String token, @Body APIMethods.FlightDeleteRequest body);
 
     @GET("account/check")
     Call<Session> checkAccount(@Header("X-Token") String token);

@@ -7,25 +7,40 @@
         android:layout_height="match_parent"
         tools:context=".presentation.view.FlightsTypeFragment">
 
-    <TextView
-            android:id="@+id/section_type"
+    <ProgressBar
+            style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:layout_constraintTop_creator="1"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            tools:layout_constraintLeft_creator="1"
-            android:text="@string/loading"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout" />
+            android:id="@+id/progressBar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.5" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
+            android:visibility="gone"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:paddingTop="12dp"
-            android:paddingBottom="72dp" />
+            android:paddingBottom="72dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/load_more_button"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:textColor="@color/black"
+            android:text="@string/load_more"
+            android:layout_gravity="start|bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:icon="@drawable/ic_baseline_search_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

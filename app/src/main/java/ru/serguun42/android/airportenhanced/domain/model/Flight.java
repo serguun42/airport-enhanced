@@ -106,4 +106,12 @@ public class Flight {
     public void setArrival(String arrival) {
         this.arrival = arrival;
     }
+
+    @Override
+    public String toString() {
+        return "Flight " + (incoming ? "from " : "to ") +
+                target_name +
+                " (" + target_name + ") " +
+                " #" + flight_number;
+    }
 }

@@ -77,16 +77,41 @@ public class APIMethods {
         return flight;
     }
 
-    public static class FlightDeleteRequest {
-        final String id;
+    public static class FlightChangeResponse {
+        final boolean success;
 
-        public FlightDeleteRequest(String id) {
-            this.id = id;
+        public FlightChangeResponse() {
+            this.success = false;
         }
 
-        public String getId() {
-            return id;
+        public FlightChangeResponse(boolean success) {
+            this.success = success;
         }
+
+        public boolean isSuccess() {
+            return success;
+        }
+    }
+
+    public static LiveData<FlightChangeResponse> createFlight(String token, Flight body) {
+        MutableLiveData<FlightChangeResponse> flightCreateResponse = new MutableLiveData<>();
+
+        getApi().createFlight(token, body).enqueue(new Callback<FlightChangeResponse>() {
+            @Override
+            public void onResponse(Call<FlightChangeResponse> call, Response<FlightChangeResponse> response) {
+                if (!response.isSuccessful())
+                    flightCreateResponse.setValue(new FlightChangeResponse());
+                else
+                    flightCreateResponse.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<FlightChangeResponse> call, Throwable t) {
+                flightCreateResponse.setValue(new FlightChangeResponse());
+            }
+        });
+
+        return flightCreateResponse;
     }
 
     public static class FlightEditRequest {
@@ -101,6 +126,60 @@ public class APIMethods {
         public String getId() {
             return id;
         }
+    }
+
+    public static LiveData<FlightChangeResponse> editFlight(String token, FlightEditRequest body) {
+        MutableLiveData<FlightChangeResponse> flightChangeResponse = new MutableLiveData<>();
+
+        getApi().editFlight(token, body).enqueue(new Callback<FlightChangeResponse>() {
+            @Override
+            public void onResponse(Call<FlightChangeResponse> call, Response<FlightChangeResponse> response) {
+                if (!response.isSuccessful())
+                    flightChangeResponse.setValue(new FlightChangeResponse());
+                else
+                    flightChangeResponse.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<FlightChangeResponse> call, Throwable t) {
+                flightChangeResponse.setValue(new FlightChangeResponse());
+            }
+        });
+
+        return flightChangeResponse;
+    }
+
+    public static class FlightDeleteRequest {
+        final String id;
+
+        public FlightDeleteRequest(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+    }
+
+    public static LiveData<FlightChangeResponse> deleteFlight(String token, FlightDeleteRequest body) {
+        MutableLiveData<FlightChangeResponse> flightChangeResponse = new MutableLiveData<>();
+
+        getApi().deleteFlight(token, body).enqueue(new Callback<FlightChangeResponse>() {
+            @Override
+            public void onResponse(Call<FlightChangeResponse> call, Response<FlightChangeResponse> response) {
+                if (!response.isSuccessful())
+                    flightChangeResponse.setValue(new FlightChangeResponse());
+                else
+                    flightChangeResponse.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<FlightChangeResponse> call, Throwable t) {
+                flightChangeResponse.setValue(new FlightChangeResponse());
+            }
+        });
+
+        return flightChangeResponse;
     }
 
     public static class LoginRequestPayload {
@@ -179,33 +258,6 @@ public class APIMethods {
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
                 checkSuccessful.setValue(new Session());
-            }
-        });
-
-        return checkSuccessful;
-    }
-
-    public static LiveData<Boolean> checkEditPermission(String token) {
-        MutableLiveData<Boolean> checkSuccessful = new MutableLiveData<>();
-        if (token == null || token.isEmpty()) {
-            checkSuccessful.setValue(false);
-            return checkSuccessful;
-        }
-
-        getApi().checkAccount(token).enqueue(new Callback<Session>() {
-            @Override
-            public void onResponse(Call<Session> call, Response<Session> response) {
-                if (!response.isSuccessful()) {
-                    checkSuccessful.setValue(false);
-                    return;
-                }
-
-                checkSuccessful.setValue(response.body().canEdit());
-            }
-
-            @Override
-            public void onFailure(Call<Session> call, Throwable t) {
-                checkSuccessful.setValue(false);
             }
         });
 

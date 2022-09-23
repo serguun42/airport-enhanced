@@ -12,7 +12,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
         <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tab_layout"
                 android:layout_width="match_parent"
@@ -31,15 +30,13 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/create_new"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/fab_margin"
+            android:layout_marginHorizontal="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
             android:textColor="@color/black"
             android:text="@string/create_new"
-            android:layout_gravity="end|bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_gravity="start|bottom"
             app:icon="@drawable/ic_baseline_add_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

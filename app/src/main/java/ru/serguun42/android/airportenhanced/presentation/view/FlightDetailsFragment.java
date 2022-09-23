@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -24,6 +25,7 @@ import ru.serguun42.android.airportenhanced.EditorActivity;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FlightDetailsFragmentBinding;
+import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightDetailedCardAdapter;
@@ -62,19 +64,14 @@ public class FlightDetailsFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(v -> Navigation.findNavController(v).popBackStack());
 
-        checkAccountAndMakeCreateButton();
-
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         viewModel = new ViewModelProvider(this).get(FlightDetailsViewModel.class);
         viewModel.getFlight(flightId).observe(getViewLifecycleOwner(), flight -> {
             binding.recyclerview.setAdapter(new FlightDetailedCardAdapter((MainActivity) getActivity(), Arrays.asList(flight)));
         });
+
+        checkAccountAndMakeCreateButton();
+
+        return binding.getRoot();
     }
 
     private void checkAccountAndMakeCreateButton() {
@@ -92,9 +89,21 @@ public class FlightDetailsFragment extends Fragment {
             binding.editFlight.setOnClickListener(view ->
                     root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class))
             );
-            binding.deleteFlight.setOnClickListener(view ->
-                    root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class))
-            );
+            binding.deleteFlight.setOnClickListener(view -> {
+                Flight flightFromViewModel = viewModel.getFlight(flightId).getValue();
+                if (flightFromViewModel != null)
+                    viewModel.deleteFlight(
+                            sharedPref.getString(getString(R.string.credentials_token_key), null),
+                            new APIMethods.FlightDeleteRequest(flightFromViewModel.getId())
+                    ).observe(getViewLifecycleOwner(), flightChangeResponse -> {
+                        Toast.makeText(
+                                getContext(),
+                                getString(R.string.removed_flight_number) + flightFromViewModel.getFlightNumber(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        Navigation.findNavController(view).popBackStack();
+                    });
+            });
         } else {
             binding.controlButtons.setVisibility(View.GONE);
             binding.editFlight.setOnClickListener(null);

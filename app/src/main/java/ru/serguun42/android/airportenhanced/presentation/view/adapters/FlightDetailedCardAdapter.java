@@ -80,6 +80,11 @@ public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetail
                         R.string.incoming_type :
                         R.string.departing_type)
         );
+        holder.binding.detailedFromOrTo.setText(
+                mainActivity.getString(flight.isIncoming() ?
+                        R.string.from :
+                        R.string.to)
+        );
 
         holder.binding.detailedFlightNumber.setText(flight.getFlightNumber());
         holder.binding.detailedGate.setText(flight.getGate());

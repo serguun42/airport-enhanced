@@ -70,7 +70,8 @@
                     android:text="@string/from"
                     android:textFontWeight="500"
                     android:textColor="@color/details_field_desc"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:id="@+id/detailed_from_or_to"/>
 
             <TextView
                     android:layout_width="wrap_content"

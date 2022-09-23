@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -26,12 +27,10 @@ import ru.serguun42.android.airportenhanced.presentation.view.FlightDetailsFragm
 public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.FlightViewHolder> {
     MainActivity mainActivity;
     List<Flight> flightList;
-    boolean clickable;
 
-    public FlightCardAdapter(MainActivity mainActivity, List<Flight> flightList) {
+    public FlightCardAdapter(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        this.flightList = flightList;
-        this.clickable = true;
+        this.flightList = Collections.emptyList();
     }
 
     @NonNull
@@ -46,7 +45,6 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
     @Override
     public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {
         Flight flight = flightList.get(position);
-
 
         try {
             Date departureDate = Date.from(
@@ -84,19 +82,24 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
         holder.binding.cardGate.setText(flight.getGate());
         holder.binding.cardPlaneModel.setText(flight.getPlaneModel());
 
-        if (this.clickable)
-            holder.binding.flightCard.setOnClickListener(view -> {
-                Bundle bundle = new Bundle();
-                bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_KEY, flight.getId());
+        holder.binding.flightCard.setOnClickListener(view -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_KEY, flight.getId());
 
-                Navigation.findNavController(mainActivity.binding.navHostFragment)
-                        .navigate(R.id.action_flightsList_to_flightDetails, bundle);
-            });
+            Navigation.findNavController(mainActivity.binding.navHostFragment)
+                    .navigate(R.id.action_flightsList_to_flightDetails, bundle);
+        });
     }
 
     @Override
     public int getItemCount() {
         return flightList.size();
+    }
+
+    public void updateFlightList(List<Flight> flightList) {
+        this.flightList.clear();
+        this.flightList = flightList;
+        notifyDataSetChanged();
     }
 
     public static class FlightViewHolder extends RecyclerView.ViewHolder {

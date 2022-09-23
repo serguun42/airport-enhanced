@@ -56,7 +56,7 @@ public class EditorActivity extends AppCompatActivity {
     }
 
     private void gotoLogin(@NonNull View root) {
-        root.getContext().startActivity(new Intent(root.getContext(), LoginActivity.class));
+        //        root.getContext().startActivity(new Intent(root.getContext(), LoginActivity.class));
     }
 
     private void gotoMain(@NonNull View root) {
@@ -86,39 +86,39 @@ public class EditorActivity extends AppCompatActivity {
         flight.setDeparture(getDateFromDatePicker(root.findViewById(R.id.departure)).toString());
         flight.setArrival(getDateFromDatePicker(root.findViewById(R.id.arrival)).toString());
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(MainActivity.API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
-        Call<Object> call;
-
-        if (flightId != null && !flightId.isEmpty())
-            call = airportAPI.editFlight(token, new APIMethods.FlightEditRequest(flightId, flight));
-        else
-            call = airportAPI.createFlight(token, flight);
-
-        call.enqueue(new Callback<Object>() {
-            @Override
-            public void onResponse(Call<Object> call, Response<Object> response) {
-                if (!response.isSuccessful()) {
-                    Snackbar.make(binding.getRoot(),
-                            getString(R.string.cannot_perform_action), Snackbar.LENGTH_LONG).show();
-                    return;
-                }
-
-                Snackbar.make(binding.getRoot(),
-                        getString(R.string.success), Snackbar.LENGTH_LONG).show();
-                gotoMain(root);
-            }
-
-            @Override
-            public void onFailure(Call<Object> call, Throwable t) {
-                Snackbar.make(binding.getRoot(),
-                        getString(R.string.cannot_perform_action), Snackbar.LENGTH_LONG).show();
-            }
-        });
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(MainActivity.API_URL)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//
+//        AirportAPI airportAPI = retrofit.create(AirportAPI.class);
+//        Call<Object> call;
+//
+//        if (flightId != null && !flightId.isEmpty())
+//            call = airportAPI.editFlight(token, new APIMethods.FlightEditRequest(flightId, flight));
+//        else
+//            call = airportAPI.createFlight(token, flight);
+//
+//        call.enqueue(new Callback<Object>() {
+//            @Override
+//            public void onResponse(Call<Object> call, Response<Object> response) {
+//                if (!response.isSuccessful()) {
+//                    Snackbar.make(binding.getRoot(),
+//                            getString(R.string.cannot_perform_action), Snackbar.LENGTH_LONG).show();
+//                    return;
+//                }
+//
+//                Snackbar.make(binding.getRoot(),
+//                        getString(R.string.success), Snackbar.LENGTH_LONG).show();
+//                gotoMain(root);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Object> call, Throwable t) {
+//                Snackbar.make(binding.getRoot(),
+//                        getString(R.string.cannot_perform_action), Snackbar.LENGTH_LONG).show();
+//            }
+//        });
     }
 
     /**

@@ -15,8 +15,8 @@ import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 
 public class FlightsTypeViewModel extends ViewModel {
+    private List<Flight> allFlightList = Collections.emptyList();
     private final MutableLiveData<Boolean> canLoadMoreFlights = new MutableLiveData<>(true);
-    private final MutableLiveData<List<Flight>> allFlightList = new MutableLiveData<>(Collections.emptyList());
     private final MutableLiveData<List<Flight>> filteredFlightsList = new MutableLiveData<>(Collections.emptyList());
     private final boolean isIncoming;
 
@@ -29,19 +29,25 @@ public class FlightsTypeViewModel extends ViewModel {
         return filteredFlightsList;
     }
 
+    public MutableLiveData<Boolean> getCanLoadMoreFlights() {
+        return canLoadMoreFlights;
+    }
+
     public void loadMoreFlights() {
         if (Boolean.FALSE.equals(canLoadMoreFlights.getValue())) return;
 
-        APIMethods.listFlights(allFlightList.getValue().size()).observeForever(flightsFromAPI -> {
+        APIMethods.listFlights(allFlightList.size()).observeForever(flightsFromAPI -> {
             if (flightsFromAPI.size() == 0)
                 canLoadMoreFlights.setValue(false);
             else {
                 if (flightsFromAPI.size() < 10) canLoadMoreFlights.setValue(false);
+
+                allFlightList = Stream.concat(allFlightList.stream(), flightsFromAPI.stream()).collect(Collectors.toList());
+
                 filteredFlightsList.setValue(
-                        Stream.concat(
-                                filteredFlightsList.getValue().stream(),
-                                flightsFromAPI.stream()
-                        ).filter(flight -> flight.isIncoming() == isIncoming).collect(Collectors.toList())
+                        allFlightList.stream()
+                                .filter(flight -> flight.isIncoming() == isIncoming)
+                                .collect(Collectors.toList())
                 );
             }
         });
