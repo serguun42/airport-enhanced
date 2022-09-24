@@ -13,30 +13,57 @@
         <action
                 android:id="@+id/action_flightsList_to_flightDetails"
                 app:destination="@id/flightDetails"
-                app:enterAnim="@android:anim/slide_in_left"
+                app:enterAnim="@anim/slide_left"
                 app:exitAnim="@android:anim/fade_out"
-                app:popEnterAnim="@android:anim/slide_in_left"
-                app:popExitAnim="@android:anim/slide_out_right"
-                app:popUpToSaveState="true" />
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@anim/slide_right" />
         <action
                 android:id="@+id/action_flightsList_to_login"
                 app:destination="@id/login"
-                app:enterAnim="@android:anim/slide_in_left"
+                app:enterAnim="@anim/slide_left"
                 app:exitAnim="@android:anim/fade_out"
-                app:popEnterAnim="@android:anim/slide_in_left"
-                app:popExitAnim="@android:anim/slide_out_right"
-                app:popUpToSaveState="true" />
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@anim/slide_right" />
+        <action
+                android:id="@+id/action_flightsList_to_editor"
+                app:destination="@id/editor"
+                app:enterAnim="@anim/slide_left"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@anim/slide_right" />
     </fragment>
 
     <fragment
             android:id="@+id/flightDetails"
             android:name="ru.serguun42.android.airportenhanced.presentation.view.FlightDetailsFragment"
             android:label="flightDetails"
-            tools:layout="@layout/flight_details_fragment" />
+            tools:layout="@layout/flight_details_fragment" >
+        <action
+                android:id="@+id/action_flightDetails_to_editor"
+                app:destination="@id/editor"
+                app:enterAnim="@anim/slide_left"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@anim/slide_right" />
+    </fragment>
 
     <fragment
             android:id="@+id/login"
             android:name="ru.serguun42.android.airportenhanced.presentation.view.LoginFragment"
             android:label="login"
             tools:layout="@layout/login_fragment" />
+
+    <fragment
+            android:id="@+id/editor"
+            android:name="ru.serguun42.android.airportenhanced.presentation.view.EditorFragment"
+            android:label="editor"
+            tools:layout="@layout/editor_fragment">
+        <action
+                android:id="@+id/action_editor_to_flightDetails"
+                app:destination="@id/flightDetails"
+                app:enterAnim="@anim/slide_left"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popUpTo="@id/flightsList" />
+    </fragment>
 </navigation>

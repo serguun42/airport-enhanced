@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/fab_margin"
                     android:textColor="@color/black"
-                    android:text="@string/edit"
+                    android:text="@string/edit_flight"
                     app:icon="@drawable/ic_baseline_edit_24" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

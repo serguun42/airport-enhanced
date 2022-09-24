@@ -44,8 +44,8 @@ public class FlightsTypeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        assert getArguments() != null;
-        isIncoming = getArguments().getBoolean(SECTION_TYPE_EXTRA_KEY);
+        if (getArguments() != null)
+            isIncoming = getArguments().getBoolean(SECTION_TYPE_EXTRA_KEY);
     }
 
     @Override

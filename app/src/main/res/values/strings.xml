@@ -10,10 +10,13 @@
     <string name="weather">Weather</string>
     <string name="loading">Loading</string>
     <string name="cannot_get_flights">Cannot get more flights</string>
-    <string name="cannot_get_single_flight">Cannot this flight</string>
+    <string name="cannot_get_single_flight">Cannot get this flight</string>
+    <string name="cannot_edit_flights">Cannot edit flights</string>
+    <string name="cannot_save_flight">Cannot save flight</string>
     <string name="load_more">Load more</string>
     <string name="create_new">Create new</string>
-    <string name="edit">Edit flight</string>
+    <string name="create_new_flight">Create new flight</string>
+    <string name="edit_flight">Edit flight</string>
     <string name="delete">Delete</string>
     <string name="cannot_perform_action">Cannot perform action</string>
     <string name="success">Success</string>
@@ -48,4 +51,7 @@
     <string name="no">No</string>
     <string name="can_edit_short">Can edit</string>
     <string name="removed_flight_number">"Removed flight #"</string>
+    <string name="target_airport_name">Target airport name</string>
+    <string name="is_incoming_checkbox">Is incoming</string>
+    <string name="target_airport_iata">Target airport IATA</string>
 </resources>

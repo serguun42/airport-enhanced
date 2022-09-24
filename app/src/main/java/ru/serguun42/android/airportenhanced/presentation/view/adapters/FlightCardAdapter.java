@@ -54,6 +54,7 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (!flight.isIncoming()) holder.binding.cardTimeDeparture.setTextColor(mainActivity.getColor(R.color.red_800));
 
         try {
             Date arrivalDate = Date.from(
@@ -63,6 +64,7 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (flight.isIncoming()) holder.binding.cardTimeArrival.setTextColor(mainActivity.getColor(R.color.blue_800));
 
         holder.binding.cardTitle.setText(flight.getTargetIATA() + " – " + flight.getTargetName());
 
@@ -85,7 +87,6 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
         holder.binding.flightCard.setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_KEY, flight.getId());
-
             Navigation.findNavController(mainActivity.binding.navHostFragment)
                     .navigate(R.id.action_flightsList_to_flightDetails, bundle);
         });

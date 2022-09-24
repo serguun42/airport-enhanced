@@ -77,14 +77,14 @@ public class APIMethods {
         return flight;
     }
 
-    public static class FlightChangeResponse {
+    public static class FlightDeleteResponse {
         final boolean success;
 
-        public FlightChangeResponse() {
+        public FlightDeleteResponse() {
             this.success = false;
         }
 
-        public FlightChangeResponse(boolean success) {
+        public FlightDeleteResponse(boolean success) {
             this.success = success;
         }
 
@@ -93,25 +93,25 @@ public class APIMethods {
         }
     }
 
-    public static LiveData<FlightChangeResponse> createFlight(String token, Flight body) {
-        MutableLiveData<FlightChangeResponse> flightCreateResponse = new MutableLiveData<>();
+    public static LiveData<Flight> createFlight(String token, Flight body) {
+        MutableLiveData<Flight> createdFlight = new MutableLiveData<>();
 
-        getApi().createFlight(token, body).enqueue(new Callback<FlightChangeResponse>() {
+        getApi().createFlight(token, body).enqueue(new Callback<Flight>() {
             @Override
-            public void onResponse(Call<FlightChangeResponse> call, Response<FlightChangeResponse> response) {
+            public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
-                    flightCreateResponse.setValue(new FlightChangeResponse());
+                    createdFlight.setValue(new Flight());
                 else
-                    flightCreateResponse.setValue(response.body());
+                    createdFlight.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<FlightChangeResponse> call, Throwable t) {
-                flightCreateResponse.setValue(new FlightChangeResponse());
+            public void onFailure(Call<Flight> call, Throwable t) {
+                createdFlight.setValue(new Flight());
             }
         });
 
-        return flightCreateResponse;
+        return createdFlight;
     }
 
     public static class FlightEditRequest {
@@ -128,25 +128,25 @@ public class APIMethods {
         }
     }
 
-    public static LiveData<FlightChangeResponse> editFlight(String token, FlightEditRequest body) {
-        MutableLiveData<FlightChangeResponse> flightChangeResponse = new MutableLiveData<>();
+    public static LiveData<Flight> editFlight(String token, FlightEditRequest body) {
+        MutableLiveData<Flight> editedFlight = new MutableLiveData<>();
 
-        getApi().editFlight(token, body).enqueue(new Callback<FlightChangeResponse>() {
+        getApi().editFlight(token, body).enqueue(new Callback<Flight>() {
             @Override
-            public void onResponse(Call<FlightChangeResponse> call, Response<FlightChangeResponse> response) {
+            public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
-                    flightChangeResponse.setValue(new FlightChangeResponse());
+                    editedFlight.setValue(new Flight());
                 else
-                    flightChangeResponse.setValue(response.body());
+                    editedFlight.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<FlightChangeResponse> call, Throwable t) {
-                flightChangeResponse.setValue(new FlightChangeResponse());
+            public void onFailure(Call<Flight> call, Throwable t) {
+                editedFlight.setValue(new Flight());
             }
         });
 
-        return flightChangeResponse;
+        return editedFlight;
     }
 
     public static class FlightDeleteRequest {
@@ -161,21 +161,21 @@ public class APIMethods {
         }
     }
 
-    public static LiveData<FlightChangeResponse> deleteFlight(String token, FlightDeleteRequest body) {
-        MutableLiveData<FlightChangeResponse> flightChangeResponse = new MutableLiveData<>();
+    public static LiveData<FlightDeleteResponse> deleteFlight(String token, FlightDeleteRequest body) {
+        MutableLiveData<FlightDeleteResponse> flightChangeResponse = new MutableLiveData<>();
 
-        getApi().deleteFlight(token, body).enqueue(new Callback<FlightChangeResponse>() {
+        getApi().deleteFlight(token, body).enqueue(new Callback<FlightDeleteResponse>() {
             @Override
-            public void onResponse(Call<FlightChangeResponse> call, Response<FlightChangeResponse> response) {
+            public void onResponse(Call<FlightDeleteResponse> call, Response<FlightDeleteResponse> response) {
                 if (!response.isSuccessful())
-                    flightChangeResponse.setValue(new FlightChangeResponse());
+                    flightChangeResponse.setValue(new FlightDeleteResponse());
                 else
                     flightChangeResponse.setValue(response.body());
             }
 
             @Override
-            public void onFailure(Call<FlightChangeResponse> call, Throwable t) {
-                flightChangeResponse.setValue(new FlightChangeResponse());
+            public void onFailure(Call<FlightDeleteResponse> call, Throwable t) {
+                flightChangeResponse.setValue(new FlightDeleteResponse());
             }
         });
 

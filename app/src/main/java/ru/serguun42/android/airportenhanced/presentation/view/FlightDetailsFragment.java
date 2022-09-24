@@ -3,7 +3,6 @@ package ru.serguun42.android.airportenhanced.presentation.view;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -21,7 +20,6 @@ import android.widget.Toast;
 
 import java.util.Arrays;
 
-import ru.serguun42.android.airportenhanced.EditorActivity;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FlightDetailsFragmentBinding;
@@ -47,8 +45,9 @@ public class FlightDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        assert getArguments() != null;
-        flightId = getArguments().getString(FLIGHT_ID_EXTRA_KEY);
+        if (getArguments() != null)
+            flightId = getArguments().getString(FLIGHT_ID_EXTRA_KEY);
+
         sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
     }
 
@@ -82,16 +81,21 @@ public class FlightDetailsFragment extends Fragment {
     }
 
     private void switchCreateButton(Session session) {
-        View root = binding.getRoot();
-
         if (session.canEdit()) {
             binding.controlButtons.setVisibility(View.VISIBLE);
-            binding.editFlight.setOnClickListener(view ->
-                    root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class))
-            );
+
+            binding.editFlight.setOnClickListener(view -> {
+                Flight flightFromViewModel = viewModel.getFlight(flightId).getValue();
+                if (flightFromViewModel != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(EditorFragment.FLIGHT_ID_EXTRA_KEY, flightFromViewModel.getId());
+                    Navigation.findNavController(view).navigate(R.id.action_flightDetails_to_editor, bundle);
+                }
+            });
+
             binding.deleteFlight.setOnClickListener(view -> {
                 Flight flightFromViewModel = viewModel.getFlight(flightId).getValue();
-                if (flightFromViewModel != null)
+                if (flightFromViewModel != null) {
                     viewModel.deleteFlight(
                             sharedPref.getString(getString(R.string.credentials_token_key), null),
                             new APIMethods.FlightDeleteRequest(flightFromViewModel.getId())
@@ -103,6 +107,7 @@ public class FlightDetailsFragment extends Fragment {
                         ).show();
                         Navigation.findNavController(view).popBackStack();
                     });
+                }
             });
         } else {
             binding.controlButtons.setVisibility(View.GONE);

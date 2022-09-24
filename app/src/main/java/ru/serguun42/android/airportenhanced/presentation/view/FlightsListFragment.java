@@ -1,7 +1,6 @@
 package ru.serguun42.android.airportenhanced.presentation.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -9,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -19,14 +19,11 @@ import android.view.ViewGroup;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import ru.serguun42.android.airportenhanced.EditorActivity;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FlightsListFragmentBinding;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightsTypesSectionsAdapter;
-import ru.serguun42.android.airportenhanced.presentation.viewmodel.AccountViewModel;
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightsListViewModel;
 
 public class FlightsListFragment extends Fragment {
@@ -82,12 +79,10 @@ public class FlightsListFragment extends Fragment {
     }
 
     private void switchCreateButton(Session session) {
-        View root = binding.getRoot();
-
         if (session.canEdit()) {
             binding.createNew.setVisibility(View.VISIBLE);
             binding.createNew.setOnClickListener(view ->
-                    root.getContext().startActivity(new Intent(root.getContext(), EditorActivity.class))
+                    Navigation.findNavController(view).navigate(R.id.action_flightsList_to_editor)
             );
         } else {
             binding.createNew.setVisibility(View.GONE);

@@ -40,7 +40,7 @@
                             android:layout_marginRight="8dp"
                             android:text=""
                             android:textFontWeight="500"
-                            android:textColor="@color/details_field_desc"
+                            android:textColor="@color/card_supporting_color"
                             android:textSize="16dp" />
 
                     <TextView
@@ -64,7 +64,7 @@
                             android:layout_marginRight="8dp"
                             android:text="@string/user_short"
                             android:textFontWeight="500"
-                            android:textColor="@color/details_field_desc"
+                            android:textColor="@color/card_supporting_color"
                             android:textSize="16dp" />
 
                     <TextView
@@ -90,7 +90,7 @@
                             android:layout_marginRight="8dp"
                             android:text="@string/can_edit_short"
                             android:textFontWeight="500"
-                            android:textColor="@color/details_field_desc"
+                            android:textColor="@color/card_supporting_color"
                             android:textSize="16dp" />
 
                     <TextView

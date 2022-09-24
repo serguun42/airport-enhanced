@@ -8,7 +8,7 @@ import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 
-public class FlightDetailsViewModel extends ViewModel {
+public class EditorViewModel extends ViewModel {
     private LiveData<Flight> flight = new MutableLiveData<>();
 
     public LiveData<Flight> getFlight(String flightId) {
@@ -18,11 +18,16 @@ public class FlightDetailsViewModel extends ViewModel {
         return flight;
     }
 
-    public LiveData<APIMethods.FlightDeleteResponse> deleteFlight(String token, APIMethods.FlightDeleteRequest body) {
-        return APIMethods.deleteFlight(token, body);
-    }
-
     public LiveData<Session> checkSession(String token) {
         return APIMethods.checkSession(token);
+    }
+
+    public LiveData<Flight> createFlight(String token, Flight flight) {
+        return APIMethods.createFlight(token, flight);
+    }
+
+    public LiveData<Flight> editFlight(String token, String flightId, Flight flight) {
+        APIMethods.FlightEditRequest flightEditRequest = new APIMethods.FlightEditRequest(flightId, flight);
+        return APIMethods.editFlight(token, flightEditRequest);
     }
 }
