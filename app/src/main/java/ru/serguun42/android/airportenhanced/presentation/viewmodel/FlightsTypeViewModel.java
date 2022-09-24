@@ -1,7 +1,5 @@
 package ru.serguun42.android.airportenhanced.presentation.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -11,8 +9,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 
 public class FlightsTypeViewModel extends ViewModel {
     private List<Flight> allFlightList = Collections.emptyList();
@@ -36,13 +34,13 @@ public class FlightsTypeViewModel extends ViewModel {
     public void loadMoreFlights() {
         if (Boolean.FALSE.equals(canLoadMoreFlights.getValue())) return;
 
-        APIMethods.listFlights(allFlightList.size()).observeForever(flightsFromAPI -> {
-            if (flightsFromAPI.size() == 0)
+        ServiceLocator.getInstance().getRepository().listFlights(allFlightList.size()).observeForever(flightsFromDataSource -> {
+            if (flightsFromDataSource.size() == 0)
                 canLoadMoreFlights.setValue(false);
             else {
-                if (flightsFromAPI.size() < 10) canLoadMoreFlights.setValue(false);
+                if (flightsFromDataSource.size() < 10) canLoadMoreFlights.setValue(false);
 
-                allFlightList = Stream.concat(allFlightList.stream(), flightsFromAPI.stream()).collect(Collectors.toList());
+                allFlightList = Stream.concat(allFlightList.stream(), flightsFromDataSource.stream()).collect(Collectors.toList());
 
                 filteredFlightsList.setValue(
                         allFlightList.stream()

@@ -42,29 +42,35 @@ public class AccountFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        checkSession();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(AccountViewModel.class);
 
-        buildCardBasedOnSession();
+        checkSession();
     }
 
-    private void buildCardBasedOnSession() {
+    private void checkSession() {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
-        Log.d(MainActivity.MAIN_LOG_TAG, "Reading: get token " + token);
-
-        viewModel.checkSession(token).observe(getViewLifecycleOwner(), this::switchCreateButton);
+        viewModel.checkSession(token).observe(getViewLifecycleOwner(), this::buildCardBasedOnSession);
     }
 
-    private void switchCreateButton(Session session) {
+    private void buildCardBasedOnSession(Session session) {
+        Log.d(MainActivity.MAIN_LOG_TAG, "buildCardBasedOnSession(Session session): " + session);
+
         if (session.isSuccess()) {
             binding.sessionInfoLayout.setVisibility(View.VISIBLE);
             binding.logoutButton.setOnClickListener(view ->
                     viewModel.signOut(sharedPref.getString(getString(R.string.credentials_token_key), null))
                             .observe(getViewLifecycleOwner(), emptySession -> {
-                                Log.d(MainActivity.MAIN_LOG_TAG, "emptySession = " + emptySession);
                                 Toast.makeText(getContext(), getString(R.string.logout_successful), Toast.LENGTH_LONG).show();
-                                this.switchCreateButton(emptySession);
+                                this.buildCardBasedOnSession(emptySession);
                             })
             );
             binding.loginButton.setVisibility(View.GONE);

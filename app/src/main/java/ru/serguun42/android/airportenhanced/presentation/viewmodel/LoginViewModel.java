@@ -7,32 +7,25 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import ru.serguun42.android.airportenhanced.MainActivity;
+import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.LoginFormState;
-import ru.serguun42.android.airportenhanced.domain.model.LoginResult;
 import ru.serguun42.android.airportenhanced.R;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
+import ru.serguun42.android.airportenhanced.domain.model.Session;
 
 public class LoginViewModel extends ViewModel {
-    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    private final MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private final MutableLiveData<Session> session = new MutableLiveData<>();
 
     public LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
 
-    public LiveData<LoginResult> getLoginResult() {
-        return loginResult;
+    public LiveData<Session> getSession() {
+        return session;
     }
 
     public void loginWithAPI(String username, String password) {
-        APIMethods.signIn(username, password).observeForever(loginResultFromAPI -> {
-            if (loginResultFromAPI.getSuccess() != null)
-                Log.d(MainActivity.MAIN_LOG_TAG, "loginResultFromAPI: " + loginResultFromAPI.getSuccess());
-            else
-                Log.d(MainActivity.MAIN_LOG_TAG, "Error in loginResultFromAPI: " + loginResultFromAPI.getError());
-
-            loginResult.setValue(loginResultFromAPI);
-        });
+        ServiceLocator.getInstance().getRepository().signIn(username, password).observeForever(session::setValue);
     }
 
     public void loginDataChanged(String username, String password) {

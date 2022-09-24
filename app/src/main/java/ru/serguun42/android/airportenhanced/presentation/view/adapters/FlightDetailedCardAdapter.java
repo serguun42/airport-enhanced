@@ -36,7 +36,6 @@ public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetail
         return new FlightViewHolder(binding);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint({"UseCompatLoadingForDrawables", "SimpleDateFormat", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {

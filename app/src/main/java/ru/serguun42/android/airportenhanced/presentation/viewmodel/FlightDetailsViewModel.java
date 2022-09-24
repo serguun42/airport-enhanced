@@ -4,9 +4,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.APIDataSource;
 
 public class FlightDetailsViewModel extends ViewModel {
     private LiveData<Flight> flight = new MutableLiveData<>();
@@ -14,15 +15,15 @@ public class FlightDetailsViewModel extends ViewModel {
     public LiveData<Flight> getFlight(String flightId) {
         if (flight.getValue() != null) return flight;
 
-        flight = APIMethods.getFlight(flightId);
+        flight = ServiceLocator.getInstance().getRepository().getFlight(flightId);
         return flight;
     }
 
-    public LiveData<APIMethods.FlightDeleteResponse> deleteFlight(String token, APIMethods.FlightDeleteRequest body) {
-        return APIMethods.deleteFlight(token, body);
+    public LiveData<APIDataSource.FlightDeleteResponse> deleteFlight(String token, String flightId) {
+        return ServiceLocator.getInstance().getRepository().deleteFlight(token, flightId);
     }
 
     public LiveData<Session> checkSession(String token) {
-        return APIMethods.checkSession(token);
+        return ServiceLocator.getInstance().getRepository().checkSession(token);
     }
 }

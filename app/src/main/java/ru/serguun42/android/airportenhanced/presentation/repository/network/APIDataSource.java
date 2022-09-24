@@ -17,28 +17,25 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.domain.model.LoginResult;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryInterface;
 
-public class APIMethods {
-    private static AirportAPI api;
+public class APIDataSource implements RepositoryInterface {
+    private APIAirportInterface api;
 
-    private static AirportAPI getApi() {
-        if (api == null) {
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(AirportAPI.API_BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+    public APIDataSource() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(APIAirportInterface.API_BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-            api = retrofit.create(AirportAPI.class);
-        }
-        return api;
+        api = retrofit.create(APIAirportInterface.class);
     }
 
-    public static LiveData<List<Flight>> listFlights(int skip) {
+    public LiveData<List<Flight>> listFlights(int skip) {
         MutableLiveData<List<Flight>> flightsList = new MutableLiveData<>();
 
-        getApi().listFlights(skip).enqueue(new Callback<List<Flight>>() {
+        api.listFlights(skip).enqueue(new Callback<List<Flight>>() {
             @Override
             public void onResponse(@NonNull Call<List<Flight>> call, Response<List<Flight>> response) {
                 if (!response.isSuccessful())
@@ -56,10 +53,10 @@ public class APIMethods {
         return flightsList;
     }
 
-    public static LiveData<Flight> getFlight(String flightId) {
+    public LiveData<Flight> getFlight(String flightId) {
         MutableLiveData<Flight> flight = new MutableLiveData<>();
 
-        getApi().getFlight(flightId).enqueue(new Callback<Flight>() {
+        api.getFlight(flightId).enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
@@ -77,26 +74,10 @@ public class APIMethods {
         return flight;
     }
 
-    public static class FlightDeleteResponse {
-        final boolean success;
-
-        public FlightDeleteResponse() {
-            this.success = false;
-        }
-
-        public FlightDeleteResponse(boolean success) {
-            this.success = success;
-        }
-
-        public boolean isSuccess() {
-            return success;
-        }
-    }
-
-    public static LiveData<Flight> createFlight(String token, Flight body) {
+    public LiveData<Flight> createFlight(String token, Flight changedFlight) {
         MutableLiveData<Flight> createdFlight = new MutableLiveData<>();
 
-        getApi().createFlight(token, body).enqueue(new Callback<Flight>() {
+        api.createFlight(token, changedFlight).enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
@@ -128,10 +109,12 @@ public class APIMethods {
         }
     }
 
-    public static LiveData<Flight> editFlight(String token, FlightEditRequest body) {
+    public LiveData<Flight> editFlight(String token, String flightId, Flight changedFlight) {
+        FlightEditRequest flightEditRequest = new FlightEditRequest(flightId, changedFlight);
+
         MutableLiveData<Flight> editedFlight = new MutableLiveData<>();
 
-        getApi().editFlight(token, body).enqueue(new Callback<Flight>() {
+        api.editFlight(token, flightEditRequest).enqueue(new Callback<Flight>() {
             @Override
             public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
@@ -161,10 +144,12 @@ public class APIMethods {
         }
     }
 
-    public static LiveData<FlightDeleteResponse> deleteFlight(String token, FlightDeleteRequest body) {
+    public LiveData<FlightDeleteResponse> deleteFlight(String token, String flightId) {
+        FlightDeleteRequest flightDeleteRequest = new FlightDeleteRequest(flightId);
+
         MutableLiveData<FlightDeleteResponse> flightChangeResponse = new MutableLiveData<>();
 
-        getApi().deleteFlight(token, body).enqueue(new Callback<FlightDeleteResponse>() {
+        api.deleteFlight(token, flightDeleteRequest).enqueue(new Callback<FlightDeleteResponse>() {
             @Override
             public void onResponse(Call<FlightDeleteResponse> call, Response<FlightDeleteResponse> response) {
                 if (!response.isSuccessful())
@@ -192,61 +177,61 @@ public class APIMethods {
         }
     }
 
-    public static LiveData<LoginResult> signIn(String username, String password) {
-        MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
+    public LiveData<Session> signIn(String username, String password) {
+        MutableLiveData<Session> sessionLiveData = new MutableLiveData<>();
 
-        getApi().signIn(new LoginRequestPayload(username, password)).enqueue(new Callback<Session>() {
+        api.signIn(new LoginRequestPayload(username, password)).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (response.code() == 404) {
-                    getApi().signUp(new LoginRequestPayload(username, password)).enqueue(new Callback<Session>() {
+                    api.signUp(new LoginRequestPayload(username, password)).enqueue(new Callback<Session>() {
                         @Override
                         public void onResponse(Call<Session> callRegister, Response<Session> response) {
                             if (!response.isSuccessful()) {
-                                loginResult.setValue(new LoginResult(R.string.login_failed));
+                                sessionLiveData.setValue(new Session());
                                 return;
                             }
 
                             Session session = response.body();
-                            Log.d(MainActivity.MAIN_LOG_TAG, "New " + session);
-                            loginResult.setValue(new LoginResult(session));
+                            Log.d(MainActivity.MAIN_LOG_TAG, "New: " + session);
+                            sessionLiveData.setValue(session);
                         }
 
                         @Override
                         public void onFailure(Call<Session> callRegister, Throwable t) {
-                            loginResult.setValue(new LoginResult(R.string.login_failed));
+                            sessionLiveData.setValue(new Session());
                         }
                     });
                     return;
                 }
 
                 if (!response.isSuccessful()) {
-                    loginResult.setValue(new LoginResult(R.string.login_failed));
+                    sessionLiveData.setValue(new Session());
                     return;
                 }
 
                 Session session = response.body();
-                Log.d(MainActivity.MAIN_LOG_TAG, "New " + session);
-                loginResult.setValue(new LoginResult(session));
+                Log.d(MainActivity.MAIN_LOG_TAG, "New: " + session);
+                sessionLiveData.setValue(session);
             }
 
             @Override
             public void onFailure(Call<Session> call, Throwable t) {
-                loginResult.setValue(new LoginResult(R.string.login_failed));
+                sessionLiveData.setValue(new Session());
             }
         });
 
-        return loginResult;
+        return sessionLiveData;
     }
 
-    public static LiveData<Session> checkSession(String token) {
+    public LiveData<Session> checkSession(String token) {
         MutableLiveData<Session> checkSuccessful = new MutableLiveData<>();
         if (token == null || token.isEmpty()) {
             checkSuccessful.setValue(new Session());
             return checkSuccessful;
         }
 
-        getApi().checkAccount(token).enqueue(new Callback<Session>() {
+        api.checkAccount(token).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful())
@@ -264,14 +249,14 @@ public class APIMethods {
         return checkSuccessful;
     }
 
-    public static LiveData<Session> signOut(String token) {
+    public LiveData<Session> signOut(String token) {
         MutableLiveData<Session> signOutSuccess = new MutableLiveData<>();
         if (token == null || token.isEmpty()) {
             signOutSuccess.setValue(new Session());
             return signOutSuccess;
         }
 
-        getApi().signOut(token).enqueue(new Callback<Session>() {
+        api.signOut(token).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful()) {

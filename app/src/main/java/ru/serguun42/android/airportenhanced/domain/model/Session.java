@@ -38,9 +38,10 @@ public class Session {
 
     @Override
     public String toString() {
-        return "Session: success = " + success +
-                ", username = " + (username.isEmpty() ? "<none>" : username) +
-                ", token = " + (token.isEmpty() ? "<none>" : token) +
-                ", can_edit = " + can_edit;
+        return "Session (" +
+                (success ? "valid" : "not valid") +
+                "): username – " + (username.isEmpty() ? "<none>" : username) +
+                ", token – " + (token.isEmpty() ? "<none>" : token) +
+                ", can_edit – " + can_edit;
     }
 }

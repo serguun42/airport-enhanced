@@ -79,10 +79,10 @@ public class EditorFragment extends Fragment {
         binding.saveButton.setOnClickListener(v -> {
             String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
 
-            Flight changingFlight = collectFlightByFields();
+            Flight changedFlight = collectFlightByFields();
             LiveData<Flight> changeActionData = (flightId != null && !flightId.isEmpty()) ?
-                    viewModel.editFlight(token, flightId, changingFlight) :
-                    viewModel.createFlight(token, changingFlight);
+                    viewModel.editFlight(token, flightId, changedFlight) :
+                    viewModel.createFlight(token, changedFlight);
 
             changeActionData.observe(getViewLifecycleOwner(), flightChangeResponse -> {
                 if (flightChangeResponse != null &&flightChangeResponse.getId() != null && !flightChangeResponse.getId().isEmpty()) {

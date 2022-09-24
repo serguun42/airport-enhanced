@@ -1,9 +1,7 @@
 package ru.serguun42.android.airportenhanced.presentation.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -66,22 +64,21 @@ public class LoginFragment extends Fragment {
                 passwordEditText.setError(getString(loginFormState.getPasswordError()));
         });
 
-        viewModel.getLoginResult().observe(getViewLifecycleOwner(), loginResult -> {
-            if (loginResult == null) return;
+        viewModel.getSession().observe(getViewLifecycleOwner(), session -> {
+            if (session == null) return;
 
             loadingProgressBar.setVisibility(View.GONE);
-            if (loginResult.getError() != null)
-                showLoginFailed(loginResult.getError());
 
-            if (loginResult.getSuccess() != null) {
-                String token = loginResult.getSuccess().getToken();
+            if (session.isSuccess()) {
+                String token = session.getToken();
 
-                Log.d(MainActivity.MAIN_LOG_TAG, "Editing: set token to " + token);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.credentials_token_key), token);
                 editor.apply();
 
-                updateUiWithUser(loginResult.getSuccess());
+                updateUiWithUser(session);
+            } else {
+                showLoginFailed(R.string.login_failed);
             }
 
             Navigation.findNavController(binding.getRoot()).popBackStack();

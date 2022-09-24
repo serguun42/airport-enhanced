@@ -4,6 +4,7 @@
         package="ru.serguun42.android.airportenhanced">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
             android:allowBackup="true"
@@ -16,7 +17,6 @@
         <activity
                 android:name=".MainActivity"
                 android:exported="true"
-                android:label="@string/app_name"
                 android:theme="@style/Theme.AirportEnhanced.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

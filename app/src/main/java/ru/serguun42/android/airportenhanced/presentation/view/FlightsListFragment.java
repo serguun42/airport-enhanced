@@ -64,14 +64,21 @@ public class FlightsListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        checkSession();
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(FlightsListViewModel.class);
-        checkAccountAndMakeCreateButton();
+        checkSession();
     }
 
-    private void checkAccountAndMakeCreateButton() {
+    private void checkSession() {
         String token = sharedPref.getString(getString(R.string.credentials_token_key), null);
         Log.d(MainActivity.MAIN_LOG_TAG, "Reading: get token " + token);
 

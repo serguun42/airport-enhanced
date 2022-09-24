@@ -2,15 +2,12 @@ package ru.serguun42.android.airportenhanced.domain.model;
 
 import androidx.annotation.Nullable;
 
-/**
- * Data validation state of the login form.
- */
 public class LoginFormState {
     @Nullable
-    private Integer usernameError;
+    private final Integer usernameError;
     @Nullable
-    private Integer passwordError;
-    private boolean isDataValid;
+    private final Integer passwordError;
+    private final boolean isDataValid;
 
     public LoginFormState(@Nullable Integer usernameError, @Nullable Integer passwordError) {
         this.usernameError = usernameError;

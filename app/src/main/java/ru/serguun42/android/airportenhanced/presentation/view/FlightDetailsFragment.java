@@ -25,7 +25,6 @@ import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.FlightDetailsFragmentBinding;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.APIMethods;
 import ru.serguun42.android.airportenhanced.presentation.view.adapters.FlightDetailedCardAdapter;
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightDetailsViewModel;
 
@@ -98,8 +97,8 @@ public class FlightDetailsFragment extends Fragment {
                 if (flightFromViewModel != null) {
                     viewModel.deleteFlight(
                             sharedPref.getString(getString(R.string.credentials_token_key), null),
-                            new APIMethods.FlightDeleteRequest(flightFromViewModel.getId())
-                    ).observe(getViewLifecycleOwner(), flightChangeResponse -> {
+                            flightFromViewModel.getId()
+                    ).observe(getViewLifecycleOwner(), flightDeleteResponse -> {
                         Toast.makeText(
                                 getContext(),
                                 getString(R.string.removed_flight_number) + flightFromViewModel.getFlightNumber(),
