@@ -76,19 +76,43 @@
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="YYY – Neverland"
+                    android:text="Neverland"
                     android:textFontWeight="900"
                     android:ellipsize="end"
                     android:textColor="@color/black"
                     android:textSize="24dp"
                     android:layout_weight="1"
-                    android:id="@+id/detailed_target" />
+                    android:id="@+id/detailed_target_name" />
         </TableRow>
 
         <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="16dp">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:text="@string/target_airport_iata_short"
+                    android:textFontWeight="500"
+                    android:textColor="@color/card_supporting_color"
+                    android:textSize="16dp" />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YYY"
+                    android:textFontWeight="500"
+                    android:textColor="@color/black"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:id="@+id/detailed_target_iata" />
+        </TableRow>
+
+        <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
             <TextView
                     android:layout_width="wrap_content"

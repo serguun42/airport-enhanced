@@ -1,6 +1,15 @@
 package ru.serguun42.android.airportenhanced.domain.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+import java.util.UUID;
+
+@Entity(tableName = "flight")
 public class Flight {
+    @NonNull
+    @PrimaryKey
     private String id;
     private boolean incoming;
     private String target_name;
@@ -12,7 +21,7 @@ public class Flight {
     private String arrival;
 
     public Flight() {
-        this.id = "";
+        this.id = UUID.randomUUID().toString();
         this.incoming = true;
         this.target_name = "";
         this.target_iata = "";
@@ -23,7 +32,7 @@ public class Flight {
         this.arrival = "";
     }
 
-    public Flight(String id, boolean incoming, String target_name, String target_iata, String gate, String flight_number, String plane_model, String departure, String arrival) {
+    public Flight(@NonNull String id, boolean incoming, String target_name, String target_iata, String gate, String flight_number, String plane_model, String departure, String arrival) {
         this.id = id;
         this.incoming = incoming;
         this.target_name = target_name;
@@ -107,6 +116,39 @@ public class Flight {
         this.arrival = arrival;
     }
 
+    public String getTarget_name() {
+        return target_name;
+    }
+
+    public void setTarget_name(String target_name) {
+        this.target_name = target_name;
+    }
+
+    public String getTarget_iata() {
+        return target_iata;
+    }
+
+    public void setTarget_iata(String target_iata) {
+        this.target_iata = target_iata;
+    }
+
+    public String getFlight_number() {
+        return flight_number;
+    }
+
+    public void setFlight_number(String flight_number) {
+        this.flight_number = flight_number;
+    }
+
+    public String getPlane_model() {
+        return plane_model;
+    }
+
+    public void setPlane_model(String plane_model) {
+        this.plane_model = plane_model;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Flight " + (incoming ? "from " : "to ") +

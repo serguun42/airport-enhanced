@@ -60,7 +60,8 @@ public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetail
             e.printStackTrace();
         }
 
-        holder.binding.detailedTarget.setText(flight.getTargetIATA() + " – " + flight.getTargetName());
+        holder.binding.detailedTargetName.setText(flight.getTargetName());
+        holder.binding.detailedTargetIata.setText(flight.getTargetIATA());
 
         holder.binding.detailedIcon.setImageDrawable(
                 mainActivity.getDrawable(flight.isIncoming() ?
