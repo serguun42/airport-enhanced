@@ -8,7 +8,6 @@ import ru.serguun42.android.airportenhanced.databinding.ActivityMainBinding;
 import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String API_URL = "https://airport.serguun42.ru/api/v1/";
     public static final String MAIN_LOG_TAG = "mainLogTag";
 
     public ActivityMainBinding binding;

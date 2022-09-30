@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
 
-public interface APIAirportInterface {
+public interface AirportAPI {
     String API_BASE_URL = "https://airport.serguun42.ru/api/v1.1/";
 
     @GET("flights/list")
@@ -24,19 +24,19 @@ public interface APIAirportInterface {
     Call<Flight> createFlight(@Header("X-Token") String token, @Body Flight body);
 
     @POST("flights/edit")
-    Call<Flight> editFlight(@Header("X-Token") String token, @Body APIDataSource.FlightEditRequest body);
+    Call<Flight> editFlight(@Header("X-Token") String token, @Body APIRepository.FlightEditRequest body);
 
     @POST("flights/delete")
-    Call<APIDataSource.FlightDeleteResponse> deleteFlight(@Header("X-Token") String token, @Body APIDataSource.FlightDeleteRequest body);
+    Call<APIRepository.FlightDeleteResponse> deleteFlight(@Header("X-Token") String token, @Body APIRepository.FlightDeleteRequest body);
 
     @GET("account/check")
     Call<Session> checkAccount(@Header("X-Token") String token);
 
     @POST("account/signin")
-    Call<Session> signIn(@Body APIDataSource.LoginRequestPayload body);
+    Call<Session> signIn(@Body APIRepository.LoginRequestPayload body);
 
     @POST("account/signup")
-    Call<Session> signUp(@Body APIDataSource.LoginRequestPayload body);
+    Call<Session> signUp(@Body APIRepository.LoginRequestPayload body);
 
     @POST("account/signout")
     Call<Session> signOut(@Header("X-Token") String token);

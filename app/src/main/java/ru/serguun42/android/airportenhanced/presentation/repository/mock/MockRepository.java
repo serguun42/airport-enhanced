@@ -3,31 +3,29 @@ package ru.serguun42.android.airportenhanced.presentation.repository.mock;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryInterface;
+import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 
-public class MockDataSource implements RepositoryInterface {
+public class MockRepository implements RepositoryActions {
     private final List<Flight> flights;
     private Session session;
 
-    public MockDataSource() {
+    public MockRepository() {
         flights = new ArrayList<>();
         session = new Session();
 
         flights.add(new Flight(
-                "ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01100000",
+                UUID.randomUUID().toString(),
                 true,
-                "Some other airport",
-                "SOA",
+                "Example airport in non-existent city",
+                "MOC",
                 "G01",
                 "F0001",
                 "Yak 152",
@@ -36,10 +34,10 @@ public class MockDataSource implements RepositoryInterface {
         ));
 
         flights.add(new Flight(
-                "ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01100001",
+                UUID.randomUUID().toString(),
                 true,
-                "Some other airport",
-                "SOA",
+                "Example airport in non-existent city",
+                "MOC",
                 "G01",
                 "F0001",
                 "Yak 152",
@@ -48,10 +46,10 @@ public class MockDataSource implements RepositoryInterface {
         ));
 
         flights.add(new Flight(
-                "ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01100002",
+                UUID.randomUUID().toString(),
                 false,
-                "Some other airport",
-                "SOA",
+                "Example airport in non-existent city",
+                "MOC",
                 "G01",
                 "F0001",
                 "Yak 152",

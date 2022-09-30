@@ -15,21 +15,20 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.MainActivity;
-import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryInterface;
+import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 
-public class APIDataSource implements RepositoryInterface {
-    private APIAirportInterface api;
+public class APIRepository implements RepositoryActions {
+    private AirportAPI api;
 
-    public APIDataSource() {
+    public APIRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(APIAirportInterface.API_BASE_URL)
+                .baseUrl(AirportAPI.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        api = retrofit.create(APIAirportInterface.class);
+        api = retrofit.create(AirportAPI.class);
     }
 
     public LiveData<List<Flight>> listFlights(int skip) {
@@ -38,6 +37,8 @@ public class APIDataSource implements RepositoryInterface {
         api.listFlights(skip).enqueue(new Callback<List<Flight>>() {
             @Override
             public void onResponse(@NonNull Call<List<Flight>> call, Response<List<Flight>> response) {
+                // TODO: store in implicit local DB repository with some method named like 'cacheFor()'
+
                 if (!response.isSuccessful())
                     flightsList.setValue(Collections.emptyList());
                 else

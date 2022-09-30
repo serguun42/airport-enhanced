@@ -6,9 +6,9 @@ import java.util.List;
 
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.APIDataSource;
+import ru.serguun42.android.airportenhanced.presentation.repository.network.APIRepository;
 
-public interface RepositoryInterface {
+public interface RepositoryActions {
 
     class FlightDeleteResponse {
         final boolean success;
@@ -34,7 +34,7 @@ public interface RepositoryInterface {
 
     LiveData<Flight> editFlight(String token, String flightId, Flight changedFlight);
 
-    LiveData<APIDataSource.FlightDeleteResponse> deleteFlight(String token, String flightId);
+    LiveData<APIRepository.FlightDeleteResponse> deleteFlight(String token, String flightId);
 
     LiveData<Session> signIn(String username, String password);
 
