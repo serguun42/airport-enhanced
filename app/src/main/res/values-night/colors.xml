@@ -13,11 +13,11 @@
     <color name="teal_700">#00796B</color>
     <color name="teal_800">#00695C</color>
     <color name="teal_900">#004D40</color>
-    <color name="departing_color">#C62828</color>
-    <color name="arriving_color">#0277BD</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="card_background_color">#FFFFFF</color>
-    <color name="card_text_color">#000</color>
-    <color name="card_supporting_color">#595959</color>
+    <color name="departing_color">#EF5350</color>
+    <color name="arriving_color">#42A5F5</color>
+    <color name="black">#E1E1E1</color>
+    <color name="white">#000</color>
+    <color name="card_background_color">#242424</color>
+    <color name="card_text_color">#E1E1E1</color>
+    <color name="card_supporting_color">#888</color>
 </resources>

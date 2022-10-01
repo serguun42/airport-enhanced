@@ -2,6 +2,7 @@ package ru.serguun42.android.airportenhanced.domain.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.UUID;
@@ -20,6 +21,7 @@ public class Flight {
     private String departure;
     private String arrival;
 
+    @Ignore
     public Flight() {
         this.id = UUID.randomUUID().toString();
         this.incoming = true;

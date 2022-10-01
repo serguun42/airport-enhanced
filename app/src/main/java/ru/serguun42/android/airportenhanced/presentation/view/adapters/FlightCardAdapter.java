@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -40,31 +39,31 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
         return new FlightViewHolder(binding);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint({"UseCompatLoadingForDrawables", "SimpleDateFormat", "SetTextI18n"})
     @Override
     public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {
         Flight flight = flightList.get(position);
+        if (flight == null) return;
 
         try {
-            Date departureDate = Date.from(
-                    Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getDeparture()))
-            );
-            holder.binding.cardTimeDeparture.setText(new SimpleDateFormat("HH:mm").format(departureDate));
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (flight.getDeparture() != null && !flight.getDeparture().isEmpty()) {
+                Date departureDate = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getDeparture())));
+                holder.binding.cardTimeDeparture.setText(new SimpleDateFormat("HH:mm").format(departureDate));
+            }
+        } catch (Exception ignored) {
         }
-        if (!flight.isIncoming()) holder.binding.cardTimeDeparture.setTextColor(mainActivity.getColor(R.color.red_800));
+        if (!flight.isIncoming())
+            holder.binding.cardTimeDeparture.setTextColor(mainActivity.getColor(R.color.departing_color));
 
         try {
-            Date arrivalDate = Date.from(
-                    Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getArrival()))
-            );
-            holder.binding.cardTimeArrival.setText(new SimpleDateFormat("HH:mm").format(arrivalDate));
-        } catch (Exception e) {
-            e.printStackTrace();
+            if (flight.getArrival() != null && !flight.getArrival().isEmpty()) {
+                Date arrivalDate = Date.from(Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getArrival())));
+                holder.binding.cardTimeArrival.setText(new SimpleDateFormat("HH:mm").format(arrivalDate));
+            }
+        } catch (Exception ignored) {
         }
-        if (flight.isIncoming()) holder.binding.cardTimeArrival.setTextColor(mainActivity.getColor(R.color.blue_800));
+        if (flight.isIncoming())
+            holder.binding.cardTimeArrival.setTextColor(mainActivity.getColor(R.color.arriving_color));
 
         holder.binding.cardTitle.setText(flight.getTargetIATA() + " – " + flight.getTargetName());
 
@@ -75,8 +74,8 @@ public class FlightCardAdapter extends RecyclerView.Adapter<FlightCardAdapter.Fl
         );
         holder.binding.cardIcon.setColorFilter(
                 mainActivity.getColor(flight.isIncoming() ?
-                        R.color.blue_800 :
-                        R.color.red_800),
+                        R.color.arriving_color :
+                        R.color.departing_color),
                 android.graphics.PorterDuff.Mode.SRC_IN
         );
 

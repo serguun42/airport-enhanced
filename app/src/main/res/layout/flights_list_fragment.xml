@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:textColor="@color/black"
             android:text="@string/create_new"
             android:layout_gravity="start|bottom"
             app:icon="@drawable/ic_baseline_edit_24" />

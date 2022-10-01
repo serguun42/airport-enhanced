@@ -7,7 +7,7 @@
         tools:context=".presentation.view.AccountFragment">
 
     <LinearLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/session_info_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -109,28 +109,38 @@
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/logout_button"
-                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/fab_margin"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:textColor="@color/black"
                 android:text="@string/logout"
+                android:layout_marginVertical="16dp"
                 android:layout_gravity="center|bottom"
                 app:icon="@drawable/ic_baseline_login_24" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/login_button"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:textColor="@color/black"
             android:text="@string/login"
             android:layout_gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:icon="@drawable/ic_baseline_login_24" />
+
+
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/clear_database_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/fab_margin"
+            android:layout_marginBottom="@dimen/fab_margin"
+            android:text="@string/local_db"
+            android:layout_gravity="end|bottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:icon="@drawable/ic_baseline_delete_forever_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

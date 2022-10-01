@@ -53,4 +53,5 @@
     <string name="is_incoming_checkbox">Is incoming</string>
     <string name="target_airport_iata">Target airport IATA</string>
     <string name="target_airport_iata_short">IATA code</string>
+    <string name="local_db">Local DB</string>
 </resources>
