@@ -95,7 +95,7 @@ public class MockRepository implements RepositoryActions {
 
 
     public LiveData<Session> signIn(String username, String password) {
-        session = new Session(true, username, "ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01109999", true);
+        session = new Session("ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01109999", true, username, true);
         return new MutableLiveData<>(session);
     }
 

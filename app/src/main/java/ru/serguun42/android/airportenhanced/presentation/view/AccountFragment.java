@@ -38,6 +38,8 @@ public class AccountFragment extends Fragment {
         sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
         binding = AccountFragmentBinding.inflate(getLayoutInflater(), container, false);
 
+        binding.clearDatabaseButton.setOnClickListener(v -> viewModel.clearLocalDB());
+
         return binding.getRoot();
     }
 
@@ -64,9 +66,9 @@ public class AccountFragment extends Fragment {
     private void buildCardBasedOnSession(Session session) {
         Log.d(MainActivity.MAIN_LOG_TAG, "buildCardBasedOnSession(Session session): " + session);
 
-        if (session.isSuccess()) {
+        if (session != null && session.isSuccess()) {
             binding.sessionInfoLayout.setVisibility(View.VISIBLE);
-            binding.logoutButton.setOnClickListener(view ->
+            binding.logoutButton.setOnClickListener(v ->
                     viewModel.signOut(sharedPref.getString(getString(R.string.credentials_token_key), null))
                             .observe(getViewLifecycleOwner(), emptySession -> {
                                 Toast.makeText(getContext(), getString(R.string.logout_successful), Toast.LENGTH_LONG).show();

@@ -35,7 +35,7 @@ public class FlightsTypeFragment extends Fragment {
         adapter = new FlightCardAdapter((MainActivity) getActivity());
         binding.recyclerview.setAdapter(adapter);
 
-        binding.loadMoreButton.setOnClickListener(v -> viewModel.loadMoreFlights());
+        binding.loadMoreButton.setOnClickListener(v -> viewModel.loadFlights());
 
         return binding.getRoot();
     }
@@ -49,10 +49,18 @@ public class FlightsTypeFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
+    public void onStart() {
+        super.onStart();
+
+        viewModel.loadFlights();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         viewModel = new ViewModelProvider(this, new FlightsTypeViewModelFactory(isIncoming)).get(FlightsTypeViewModel.class);
+
         viewModel.getFlights().observe(getViewLifecycleOwner(), flights -> {
             if (flights.size() > 0) {
                 binding.progressBar.setVisibility(View.GONE);
@@ -61,10 +69,18 @@ public class FlightsTypeFragment extends Fragment {
                 adapter.updateFlightList(flights);
             }
         });
-        viewModel.getCanLoadMoreFlights().observe(getViewLifecycleOwner(), canLoadMoreFlights -> {
+
+        viewModel.getCanLoadFlights().observe(getViewLifecycleOwner(), canLoadMoreFlights -> {
             Log.d(MainActivity.MAIN_LOG_TAG, "canLoadMoreFlights = " + canLoadMoreFlights);
             binding.loadMoreButton.setVisibility(canLoadMoreFlights ? View.VISIBLE : View.GONE);
         });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        viewModel.resetFlights();
     }
 
     @Override

@@ -1,13 +1,11 @@
 package ru.serguun42.android.airportenhanced.presentation.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.presentation.repository.room.RoomRepository;
 
 public class AccountViewModel extends ViewModel {
     public LiveData<Session> checkSession(String token) {
@@ -16,5 +14,10 @@ public class AccountViewModel extends ViewModel {
 
     public LiveData<Session> signOut(String token) {
         return ServiceLocator.getInstance().getRepository().signOut(token);
+    }
+
+    public void clearLocalDB() {
+        ((RoomRepository) ServiceLocator.getInstance().getRoom()).deleteAllFlights();
+        ((RoomRepository) ServiceLocator.getInstance().getRoom()).deleteSessions();
     }
 }
