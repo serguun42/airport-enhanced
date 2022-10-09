@@ -19,6 +19,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
+    <TextView
+            android:id="@+id/noFlightsText"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_flights_in_list"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="16dp"
+            android:textAlignment="center" />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:visibility="gone"

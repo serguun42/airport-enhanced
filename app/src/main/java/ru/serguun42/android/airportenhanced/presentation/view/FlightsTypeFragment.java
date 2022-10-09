@@ -62,12 +62,13 @@ public class FlightsTypeFragment extends Fragment {
         viewModel = new ViewModelProvider(this, new FlightsTypeViewModelFactory(isIncoming)).get(FlightsTypeViewModel.class);
 
         viewModel.getFlights().observe(getViewLifecycleOwner(), flights -> {
-            if (flights.size() > 0) {
-                binding.progressBar.setVisibility(View.GONE);
-                binding.loadMoreButton.setVisibility(View.VISIBLE);
-                binding.recyclerview.setVisibility(View.VISIBLE);
-                adapter.updateFlightList(flights);
-            }
+            boolean isEmpty = flights.size() == 0;
+
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loadMoreButton.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+            binding.recyclerview.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+            binding.noFlightsText.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+            adapter.updateFlightList(flights);
         });
 
         viewModel.getCanLoadFlights().observe(getViewLifecycleOwner(), canLoadMoreFlights -> {
