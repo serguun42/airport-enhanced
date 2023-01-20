@@ -30,7 +30,8 @@ public class MockRepository implements RepositoryActions {
                 "F0001",
                 "Yak 152",
                 "2022-12-10T17:20:00.000Z",
-                "2022-12-10T20:45:00.000Z"
+                "2022-12-10T20:45:00.000Z",
+                "https://serguun42.ru/pages/boeing.jpg"
         ));
 
         flights.add(new Flight(
@@ -42,7 +43,8 @@ public class MockRepository implements RepositoryActions {
                 "F0001",
                 "Yak 152",
                 "2022-12-10T17:20:00.000Z",
-                "2022-12-10T20:45:00.000Z"
+                "2022-12-10T20:45:00.000Z",
+                "https://serguun42.ru/pages/boeing.jpg"
         ));
 
         flights.add(new Flight(
@@ -54,7 +56,8 @@ public class MockRepository implements RepositoryActions {
                 "F0001",
                 "Yak 152",
                 "2022-12-10T17:20:00.000Z",
-                "2022-12-10T20:45:00.000Z"
+                "2022-12-10T20:45:00.000Z",
+                "https://serguun42.ru/pages/boeing.jpg"
         ));
     }
 
