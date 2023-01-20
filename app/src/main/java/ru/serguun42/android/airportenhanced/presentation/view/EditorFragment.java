@@ -25,9 +25,12 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
@@ -85,7 +88,7 @@ public class EditorFragment extends Fragment {
                     viewModel.createFlight(token, changedFlight);
 
             changeActionData.observe(getViewLifecycleOwner(), flightChangeResponse -> {
-                if (flightChangeResponse != null &&flightChangeResponse.getId() != null && !flightChangeResponse.getId().isEmpty()) {
+                if (flightChangeResponse != null && flightChangeResponse.getId() != null && !flightChangeResponse.getId().isEmpty()) {
                     Bundle bundle = new Bundle();
                     bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_KEY, flightChangeResponse.getId());
                     Navigation.findNavController(binding.getRoot()).navigate(R.id.action_editor_to_flightDetails, bundle);
@@ -126,12 +129,12 @@ public class EditorFragment extends Fragment {
         binding.arrival.setOnClickListener(v -> {
             final Calendar calendar = Calendar.getInstance();
 
-            DatePickerDialog.OnDateSetListener dateSetListener = (datePickerView, year, month, dayOfMonth) -> {
+            new DatePickerDialog(getContext(), (datePickerView, year, month, dayOfMonth) -> {
                 calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, month);
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                TimePickerDialog.OnTimeSetListener timeSetListener = (timePickerView, hourOfDay, minute) -> {
+                new TimePickerDialog(getContext(), (timePickerView, hourOfDay, minute) -> {
                     calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                     calendar.set(Calendar.MINUTE, minute);
 
@@ -144,12 +147,8 @@ public class EditorFragment extends Fragment {
                     }
 
                     binding.arrival.setText(arrivingLocalDateTime.format(DateTimeFormatter.ofPattern("EEE, MMM d HH:mm")));
-                };
-
-                new TimePickerDialog(getContext(), timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
-            };
-
-            new DatePickerDialog(getContext(), dateSetListener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true).show();
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
         });
 
         checkAccount();
@@ -169,18 +168,18 @@ public class EditorFragment extends Fragment {
         binding.gate.setText(flight.getGate());
 
         try {
-            Date departureDate = Date.from(
-                    Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getDeparture()))
-            );
+            Instant instant = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getDeparture()));
+            Date departureDate = Date.from(instant);
+            departingLocalDateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
             binding.departure.setText(new SimpleDateFormat("EEE, MMM d HH:mm").format(departureDate));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            Date arrivalDate = Date.from(
-                    Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getArrival()))
-            );
+            Instant instant = Instant.from(DateTimeFormatter.ISO_INSTANT.parse(flight.getArrival()));
+            Date arrivalDate = Date.from(instant);
+            arrivingLocalDateTime = LocalDateTime.ofInstant(instant, ZoneOffset.UTC);
             binding.arrival.setText(new SimpleDateFormat("EEE, MMM d HH:mm").format(arrivalDate));
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,9 +197,9 @@ public class EditorFragment extends Fragment {
         flight.setGate(binding.gate.getText().toString());
 
         if (departingLocalDateTime != null)
-            flight.setDeparture(departingLocalDateTime.format(DateTimeFormatter.ISO_DATE_TIME));
+            flight.setDeparture(DateTimeFormatter.ISO_INSTANT.format(departingLocalDateTime.toInstant(ZoneOffset.UTC)));
         if (arrivingLocalDateTime != null)
-            flight.setArrival(arrivingLocalDateTime.format(DateTimeFormatter.ISO_DATE_TIME));
+            flight.setArrival(DateTimeFormatter.ISO_INSTANT.format(arrivingLocalDateTime.toInstant(ZoneOffset.UTC)));
 
         return flight;
     }
@@ -210,7 +209,7 @@ public class EditorFragment extends Fragment {
         Log.d(MainActivity.MAIN_LOG_TAG, "Reading: get token " + token);
 
         viewModel.checkSession(token).observe(getViewLifecycleOwner(), session -> {
-            if (!session.isSuccess()) {
+            if (session == null || !session.isSuccess()) {
                 Toast.makeText(getContext(), getString(R.string.cannot_edit_flights), Toast.LENGTH_LONG).show();
                 Navigation.findNavController(binding.getRoot()).popBackStack();
             }

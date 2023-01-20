@@ -19,6 +19,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.5" />
 
+    <TextView
+            android:id="@+id/noFlightsText"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_flights_in_list"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="16dp"
+            android:textAlignment="center" />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:visibility="gone"
@@ -32,14 +43,13 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/load_more_button"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/fab_margin"
             android:layout_marginBottom="@dimen/fab_margin"
-            android:textColor="@color/black"
             android:text="@string/load_more"
-            android:layout_gravity="start|bottom"
+            android:layout_gravity="end|bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:icon="@drawable/ic_baseline_youtube_searched_for_24" />

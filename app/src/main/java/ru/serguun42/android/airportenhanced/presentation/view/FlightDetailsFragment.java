@@ -80,7 +80,7 @@ public class FlightDetailsFragment extends Fragment {
     }
 
     private void switchCreateButton(Session session) {
-        if (session.canEdit()) {
+        if (session != null && session.canEdit()) {
             binding.controlButtons.setVisibility(View.VISIBLE);
 
             binding.editFlight.setOnClickListener(view -> {

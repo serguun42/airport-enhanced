@@ -174,7 +174,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="@dimen/fab_margin"
                 android:layout_marginBottom="@dimen/fab_margin"
-                android:textColor="@color/black"
                 android:text="@string/save"
                 app:icon="@drawable/ic_baseline_save_24" />
 

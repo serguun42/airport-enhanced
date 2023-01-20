@@ -15,21 +15,22 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.serguun42.android.airportenhanced.MainActivity;
-import ru.serguun42.android.airportenhanced.R;
+import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryInterface;
+import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
+import ru.serguun42.android.airportenhanced.presentation.repository.room.RoomRepository;
 
-public class APIDataSource implements RepositoryInterface {
-    private APIAirportInterface api;
+public class APIRepository implements RepositoryActions {
+    private AirportAPI api;
 
-    public APIDataSource() {
+    public APIRepository() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(APIAirportInterface.API_BASE_URL)
+                .baseUrl(AirportAPI.API_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        api = retrofit.create(APIAirportInterface.class);
+        api = retrofit.create(AirportAPI.class);
     }
 
     public LiveData<List<Flight>> listFlights(int skip) {
@@ -37,11 +38,14 @@ public class APIDataSource implements RepositoryInterface {
 
         api.listFlights(skip).enqueue(new Callback<List<Flight>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Flight>> call, Response<List<Flight>> response) {
+            public void onResponse(Call<List<Flight>> call, Response<List<Flight>> response) {
                 if (!response.isSuccessful())
                     flightsList.setValue(Collections.emptyList());
-                else
-                    flightsList.setValue(response.body());
+                else {
+                    List<Flight> flightsFromAPI = response.body();
+                    flightsList.setValue(flightsFromAPI);
+                    ((RoomRepository) ServiceLocator.getInstance().getRoom()).cacheFlights(flightsFromAPI);
+                }
             }
 
             @Override
@@ -61,8 +65,11 @@ public class APIDataSource implements RepositoryInterface {
             public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
                     flight.setValue(new Flight());
-                else
-                    flight.setValue(response.body());
+                else {
+                    Flight flightFromAPI = response.body();
+                    flight.setValue(flightFromAPI);
+                    ((RoomRepository) ServiceLocator.getInstance().getRoom()).cacheFlight(flightFromAPI);
+                }
             }
 
             @Override
@@ -82,8 +89,11 @@ public class APIDataSource implements RepositoryInterface {
             public void onResponse(Call<Flight> call, Response<Flight> response) {
                 if (!response.isSuccessful())
                     createdFlight.setValue(new Flight());
-                else
-                    createdFlight.setValue(response.body());
+                else {
+                    Flight flightFromAPI = response.body();
+                    createdFlight.setValue(flightFromAPI);
+                    ((RoomRepository) ServiceLocator.getInstance().getRoom()).cacheFlight(flightFromAPI);
+                }
             }
 
             @Override
@@ -154,8 +164,10 @@ public class APIDataSource implements RepositoryInterface {
             public void onResponse(Call<FlightDeleteResponse> call, Response<FlightDeleteResponse> response) {
                 if (!response.isSuccessful())
                     flightChangeResponse.setValue(new FlightDeleteResponse());
-                else
+                else {
                     flightChangeResponse.setValue(response.body());
+                    ((RoomRepository) ServiceLocator.getInstance().getRoom()).deleteFlightById(flightId);
+                }
             }
 
             @Override
@@ -195,6 +207,7 @@ public class APIDataSource implements RepositoryInterface {
                             Session session = response.body();
                             Log.d(MainActivity.MAIN_LOG_TAG, "New: " + session);
                             sessionLiveData.setValue(session);
+                            ((RoomRepository) ServiceLocator.getInstance().getRoom()).cacheSession(session);
                         }
 
                         @Override
@@ -236,8 +249,11 @@ public class APIDataSource implements RepositoryInterface {
             public void onResponse(Call<Session> call, Response<Session> response) {
                 if (!response.isSuccessful())
                     checkSuccessful.setValue(new Session());
-                else
-                    checkSuccessful.setValue(response.body());
+                else {
+                    Session sessionFromAPI = response.body();
+                    checkSuccessful.setValue(sessionFromAPI);
+                    ((RoomRepository) ServiceLocator.getInstance().getRoom()).cacheSession(sessionFromAPI);
+                }
             }
 
             @Override
@@ -259,12 +275,13 @@ public class APIDataSource implements RepositoryInterface {
         api.signOut(token).enqueue(new Callback<Session>() {
             @Override
             public void onResponse(Call<Session> call, Response<Session> response) {
-                if (!response.isSuccessful()) {
+                if (!response.isSuccessful())
                     signOutSuccess.setValue(new Session());
-                    return;
+                else {
+                    Session sessionFromAPI = response.body();
+                    signOutSuccess.setValue(sessionFromAPI);
+                    ((RoomRepository) ServiceLocator.getInstance().getRoom()).cacheSession(sessionFromAPI);
                 }
-
-                signOutSuccess.setValue(response.body());
             }
 
             @Override
