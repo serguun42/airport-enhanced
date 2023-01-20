@@ -1,8 +1,10 @@
 package ru.serguun42.android.airportenhanced.presentation.view.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -89,6 +91,22 @@ public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetail
         holder.binding.detailedFlightNumber.setText(flight.getFlightNumber());
         holder.binding.detailedGate.setText(flight.getGate());
         holder.binding.detailedPlaneModel.setText(flight.getPlaneModel());
+
+        String flightId = flight.getId();
+        if (flightId == null || flightId.isEmpty())
+            holder.binding.shareFlight.setVisibility(View.GONE);
+        else {
+            holder.binding.shareFlight.setVisibility(View.VISIBLE);
+            holder.binding.shareFlight.setOnClickListener(view -> {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "app://airport.serguun42.ru/flight?id=" + flightId);
+                sendIntent.setType("text/html");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                mainActivity.startActivity(shareIntent);
+            });
+        }
     }
 
     @Override

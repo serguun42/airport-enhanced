@@ -21,6 +21,8 @@ public class Flight {
     private String departure;
     private String arrival;
 
+    private String image;
+
     @Ignore
     public Flight() {
         this.id = UUID.randomUUID().toString();
@@ -32,9 +34,10 @@ public class Flight {
         this.plane_model = "";
         this.departure = "";
         this.arrival = "";
+        this.image = "";
     }
 
-    public Flight(@NonNull String id, boolean incoming, String target_name, String target_iata, String gate, String flight_number, String plane_model, String departure, String arrival) {
+    public Flight(@NonNull String id, boolean incoming, String target_name, String target_iata, String gate, String flight_number, String plane_model, String departure, String arrival, String image) {
         this.id = id;
         this.incoming = incoming;
         this.target_name = target_name;
@@ -44,6 +47,7 @@ public class Flight {
         this.plane_model = plane_model;
         this.departure = departure;
         this.arrival = arrival;
+        this.image = image;
     }
 
     public String getId() {
@@ -80,6 +84,10 @@ public class Flight {
 
     public String getArrival() {
         return arrival;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public void setId(String id) {
@@ -157,5 +165,9 @@ public class Flight {
                 target_name +
                 " (" + target_name + ") " +
                 " #" + flight_number;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
