@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(FlightDetailsFragment.FLIGHT_ID_EXTRA_KEY, flightIdParam);
+                bundle.putBoolean(FlightDetailsFragment.IS_SHARED_EXTRA_KEY, true);
                 NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
                 if (navHostFragment != null) {
                     NavController navController = navHostFragment.getNavController();
