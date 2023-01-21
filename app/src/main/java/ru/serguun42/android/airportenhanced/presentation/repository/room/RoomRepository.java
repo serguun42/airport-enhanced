@@ -10,6 +10,7 @@ import java.util.UUID;
 
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.domain.model.UserRecord;
 import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 import ru.serguun42.android.airportenhanced.presentation.repository.room.DAO.FlightDAO;
 import ru.serguun42.android.airportenhanced.presentation.repository.room.DAO.SessionDAO;
@@ -71,7 +72,7 @@ public class RoomRepository implements RepositoryActions {
 
     @Override
     public LiveData<Session> signIn(String username, String password) {
-        Session sessionToSet = new Session(UUID.randomUUID().toString(), true, username, true);
+        Session sessionToSet = new Session(UUID.randomUUID().toString(), true, username, 2);
         RoomDatabase.databaseWriteExecutor.execute(() -> {
             sessionDAO.deletePrevious();
             sessionDAO.storeSession(sessionToSet);
@@ -86,7 +87,7 @@ public class RoomRepository implements RepositoryActions {
 
     @Override
     public LiveData<Session> signOut(String token) {
-        Session sessionToSet = new Session(UUID.randomUUID().toString(), false, "", false);
+        Session sessionToSet = new Session(UUID.randomUUID().toString(), false, "", 0);
         RoomDatabase.databaseWriteExecutor.execute(() -> {
             sessionDAO.deletePrevious();
             sessionDAO.storeSession(sessionToSet);
@@ -103,5 +104,11 @@ public class RoomRepository implements RepositoryActions {
 
     public void deleteSessions() {
         RoomDatabase.databaseWriteExecutor.execute(sessionDAO::deletePrevious);
+    }
+
+    @Override
+    public LiveData<List<UserRecord>> listUsers(String token, int skip) {
+        /* Null because it's meaningless to even pretend that usernames and theirs levels are stored locally */
+        return null;
     }
 }

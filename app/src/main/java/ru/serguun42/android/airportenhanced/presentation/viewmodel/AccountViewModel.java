@@ -15,9 +15,4 @@ public class AccountViewModel extends ViewModel {
     public LiveData<Session> signOut(String token) {
         return ServiceLocator.getInstance().getRepository().signOut(token);
     }
-
-    public void clearLocalDB() {
-        ((RoomRepository) ServiceLocator.getInstance().getRoom()).deleteAllFlights();
-        ((RoomRepository) ServiceLocator.getInstance().getRoom()).deleteSessions();
-    }
 }

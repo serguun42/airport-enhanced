@@ -10,9 +10,11 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.domain.model.UserRecord;
+import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 
 public interface AirportAPI {
-    String API_BASE_URL = "https://airport.serguun42.ru/api/v1.1/";
+    String API_BASE_URL = "https://airport.serguun42.ru/api/v1.2/";
 
     @GET("flights/list")
     Call<List<Flight>> listFlights(@Query("skip") int skip);
@@ -27,7 +29,7 @@ public interface AirportAPI {
     Call<Flight> editFlight(@Header("X-Token") String token, @Body APIRepository.FlightEditRequest body);
 
     @POST("flights/delete")
-    Call<APIRepository.FlightDeleteResponse> deleteFlight(@Header("X-Token") String token, @Body APIRepository.FlightDeleteRequest body);
+    Call<RepositoryActions.FlightDeleteResponse> deleteFlight(@Header("X-Token") String token, @Body APIRepository.FlightDeleteRequest body);
 
     @GET("account/check")
     Call<Session> checkAccount(@Header("X-Token") String token);
@@ -40,4 +42,7 @@ public interface AirportAPI {
 
     @POST("account/signout")
     Call<Session> signOut(@Header("X-Token") String token);
+
+    @GET("admin/listUsers")
+    Call<List<UserRecord>> listUsers(@Header("X-Token") String token, @Query("skip") int skip);
 }

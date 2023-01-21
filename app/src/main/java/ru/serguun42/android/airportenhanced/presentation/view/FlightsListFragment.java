@@ -86,7 +86,7 @@ public class FlightsListFragment extends Fragment {
     }
 
     private void switchCreateButton(Session session) {
-        if (session != null && session.canEdit()) {
+        if (session != null && session.getLevel() > 0) {
             binding.createNew.setVisibility(View.VISIBLE);
             binding.createNew.setOnClickListener(view ->
                     Navigation.findNavController(view).navigate(R.id.action_flightsList_to_editor)

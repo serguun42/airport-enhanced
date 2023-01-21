@@ -6,6 +6,7 @@ import java.util.List;
 
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.domain.model.UserRecord;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIRepository;
 
 public interface RepositoryActions {
@@ -34,11 +35,13 @@ public interface RepositoryActions {
 
     LiveData<Flight> editFlight(String token, String flightId, Flight changedFlight);
 
-    LiveData<APIRepository.FlightDeleteResponse> deleteFlight(String token, String flightId);
+    LiveData<RepositoryActions.FlightDeleteResponse> deleteFlight(String token, String flightId);
 
     LiveData<Session> signIn(String username, String password);
 
     LiveData<Session> checkSession(String token);
 
     LiveData<Session> signOut(String token);
+
+    LiveData<List<UserRecord>> listUsers(String token, int skip);
 }

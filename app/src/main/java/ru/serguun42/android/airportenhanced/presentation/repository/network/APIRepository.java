@@ -18,6 +18,7 @@ import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.domain.model.UserRecord;
 import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 import ru.serguun42.android.airportenhanced.presentation.repository.room.RoomRepository;
 
@@ -291,5 +292,27 @@ public class APIRepository implements RepositoryActions {
         });
 
         return signOutSuccess;
+    }
+
+    @Override
+    public LiveData<List<UserRecord>> listUsers(String token, int skip) {
+        MutableLiveData<List<UserRecord>> usersList = new MutableLiveData<>();
+
+        api.listUsers(token, skip).enqueue(new Callback<List<UserRecord>>() {
+            @Override
+            public void onResponse(Call<List<UserRecord>> call, Response<List<UserRecord>> response) {
+                if (!response.isSuccessful())
+                    usersList.setValue(Collections.emptyList());
+                else
+                    usersList.setValue(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<UserRecord>> call, Throwable t) {
+                usersList.setValue(Collections.emptyList());
+            }
+        });
+
+        return usersList;
     }
 }

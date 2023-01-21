@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.domain.model.UserRecord;
 import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 
 public class MockRepository implements RepositoryActions {
@@ -98,7 +99,7 @@ public class MockRepository implements RepositoryActions {
 
 
     public LiveData<Session> signIn(String username, String password) {
-        session = new Session("ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01109999", true, username, true);
+        session = new Session("ff114271afe597eb0f09f3455397b7b18846a3b6d0c95cd73eebe29c01109999", true, username, 2);
         return new MutableLiveData<>(session);
     }
 
@@ -111,5 +112,19 @@ public class MockRepository implements RepositoryActions {
     public LiveData<Session> signOut(String token) {
         session = new Session();
         return new MutableLiveData<>(session);
+    }
+
+    @Override
+    public LiveData<List<UserRecord>> listUsers(String token, int skip) {
+        ArrayList usersList = new ArrayList<>();
+
+        usersList.add(new UserRecord("username", 0));
+        usersList.add(new UserRecord("username2", 0));
+        usersList.add(new UserRecord("username3", 1));
+        usersList.add(new UserRecord("username4", 2));
+        usersList.add(new UserRecord("username5", 2));
+        usersList.add(new UserRecord("username42", 42));
+
+        return new MutableLiveData<>(usersList);
     }
 }
