@@ -8,11 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -107,6 +109,17 @@ public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetail
                 mainActivity.startActivity(shareIntent);
             });
         }
+
+        String flightImage = flight.getImage();
+        if (flightImage != null && !flightImage.isEmpty()) {
+            holder.binding.recyclerview.setVisibility(View.VISIBLE);
+
+            ImageAdapter imageAdapter = new ImageAdapter(mainActivity, true, Arrays.asList(flight));
+            holder.binding.recyclerview.setHasFixedSize(true);
+            holder.binding.recyclerview.setLayoutManager(new LinearLayoutManager(holder.binding.getRoot().getContext()));
+            holder.binding.recyclerview.setAdapter(imageAdapter);
+        } else
+            holder.binding.recyclerview.setVisibility(View.GONE);
     }
 
     @Override

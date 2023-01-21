@@ -33,6 +33,7 @@
     <string name="to">To</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="flight_details">Flight details</string>
+    <string name="flight_details_shared">Flight details (shared via link)</string>
     <string name="plane_model">Plane</string>
     <string name="flight_number">Flight #</string>
     <string name="departing_time">Departing</string>

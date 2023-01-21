@@ -30,7 +30,9 @@ import ru.serguun42.android.airportenhanced.presentation.viewmodel.FlightDetails
 
 public class FlightDetailsFragment extends Fragment {
     public static final String FLIGHT_ID_EXTRA_KEY = "flight_id_extra_key";
+    public static final String IS_SHARED_EXTRA_KEY = "is_shared_extra_key";
     private String flightId;
+    private boolean isShared;
 
     private SharedPreferences sharedPref;
     private FlightDetailsFragmentBinding binding;
@@ -44,8 +46,10 @@ public class FlightDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null)
+        if (getArguments() != null) {
             flightId = getArguments().getString(FLIGHT_ID_EXTRA_KEY);
+            isShared = getArguments().getBoolean(IS_SHARED_EXTRA_KEY);
+        }
 
         sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
     }
@@ -61,6 +65,7 @@ public class FlightDetailsFragment extends Fragment {
         ((MainActivity) getActivity()).setSupportActionBar(binding.toolbar);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(v -> Navigation.findNavController(v).popBackStack());
+        binding.toolbar.setTitle(isShared ? R.string.flight_details_shared : R.string.flight_details);
 
         viewModel = new ViewModelProvider(this).get(FlightDetailsViewModel.class);
         viewModel.getFlight(flightId).observe(getViewLifecycleOwner(), flight -> {
