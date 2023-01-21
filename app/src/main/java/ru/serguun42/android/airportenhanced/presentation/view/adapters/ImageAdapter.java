@@ -29,11 +29,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageSliderV
     public ImageAdapter(MainActivity mainActivity, boolean adding, List<Flight> flights) {
         this.mainActivity = mainActivity;
         this.adding = adding;
-
-        if (this.adding && flights.size() < 1)
-            this.flightList = Arrays.asList((Flight) null);
-        else
-            this.flightList = flights;
+        this.flightList = flights;
     }
 
     @NonNull
@@ -95,7 +91,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageSliderV
     }
 
     public List<String> getImages() {
-        return this.flightList.stream().map(Flight::getImage).collect(Collectors.toList());
+        return this.flightList.stream().map(flight -> {
+            if (flight == null) return null;
+            return flight.getImage();
+        }).collect(Collectors.toList());
     }
 
     class ImageSliderViewHolder extends RecyclerView.ViewHolder {

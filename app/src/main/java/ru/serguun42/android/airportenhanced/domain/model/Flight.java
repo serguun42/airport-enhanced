@@ -1,6 +1,7 @@
 package ru.serguun42.android.airportenhanced.domain.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -20,7 +21,6 @@ public class Flight {
     private String plane_model;
     private String departure;
     private String arrival;
-
     private String image;
 
     @Ignore
@@ -88,6 +88,10 @@ public class Flight {
 
     public String getImage() {
         return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setId(String id) {
@@ -165,9 +169,5 @@ public class Flight {
                 target_name +
                 " (" + target_name + ") " +
                 " #" + flight_number;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }

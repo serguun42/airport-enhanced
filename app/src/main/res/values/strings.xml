@@ -10,6 +10,7 @@
     <string name="cannot_get_flights">Cannot get more flights</string>
     <string name="cannot_get_single_flight">Cannot get this flight</string>
     <string name="cannot_edit_flights">Cannot edit flights</string>
+    <string name="cannot_view_this_list">Cannot view this list</string>
     <string name="cannot_save_flight">Cannot save flight</string>
     <string name="load_more">Load more</string>
     <string name="create_new">Create new</string>
@@ -32,6 +33,8 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_users_list">All users list</string>
+    <string name="all_users">All users</string>
     <string name="flight_details">Flight details</string>
     <string name="flight_details_shared">Flight details (shared via link)</string>
     <string name="plane_model">Plane</string>
@@ -49,6 +52,10 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="can_edit_short">Can edit</string>
+    <string name="level_desc">User level</string>
+    <string name="regular_level">Regular user</string>
+    <string name="moder_level">Moderation</string>
+    <string name="admin_level">Administration</string>
     <string name="removed_flight_number">"Removed flight #"</string>
     <string name="target_airport_name">Target airport name</string>
     <string name="is_incoming_checkbox">Is incoming</string>

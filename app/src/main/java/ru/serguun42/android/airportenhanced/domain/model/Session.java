@@ -13,20 +13,20 @@ public class Session {
     private String token;
     private boolean success;
     private String username;
-    private boolean can_edit;
+    private int level;
 
     public Session() {
         this.token = UUID.randomUUID().toString();
         this.success = false;
         this.username = "";
-        this.can_edit = false;
+        this.level = 0;
     }
 
-    public Session(@NonNull String token, boolean success, String username, boolean can_edit) {
+    public Session(@NonNull String token, boolean success, String username, int level) {
         this.token = token;
         this.success = success;
         this.username = username;
-        this.can_edit = can_edit;
+        this.level = level;
     }
 
     @NonNull
@@ -42,12 +42,8 @@ public class Session {
         return username;
     }
 
-    public boolean canEdit() {
-        return can_edit;
-    }
-
-    public boolean isCan_edit() {
-        return can_edit;
+    public int getLevel() {
+        return level;
     }
 
     public void setToken(@NonNull String token) {
@@ -62,8 +58,8 @@ public class Session {
         this.username = username;
     }
 
-    public void setCan_edit(boolean can_edit) {
-        this.can_edit = can_edit;
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     @NonNull
@@ -73,6 +69,6 @@ public class Session {
                 (success ? "valid" : "not valid") +
                 "): username – " + (username.isEmpty() ? "<none>" : username) +
                 ", token – " + (token.isEmpty() ? "<none>" : token) +
-                ", can_edit – " + can_edit;
+                ", level – " + level;
     }
 }

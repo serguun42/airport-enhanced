@@ -38,8 +38,6 @@ public class AccountFragment extends Fragment {
         sharedPref = getActivity().getSharedPreferences(getString(R.string.shared_preferences_name_key), Context.MODE_PRIVATE);
         binding = AccountFragmentBinding.inflate(getLayoutInflater(), container, false);
 
-        binding.clearDatabaseButton.setOnClickListener(v -> viewModel.clearLocalDB());
-
         return binding.getRoot();
     }
 
@@ -68,6 +66,10 @@ public class AccountFragment extends Fragment {
 
         if (session != null && session.isSuccess()) {
             binding.sessionInfoLayout.setVisibility(View.VISIBLE);
+            binding.controlButtons.setVisibility(View.VISIBLE);
+            binding.adminListButton.setVisibility(View.GONE);
+            binding.adminListButton.setOnClickListener(null);
+            binding.logoutButton.setVisibility(View.VISIBLE);
             binding.logoutButton.setOnClickListener(v ->
                     viewModel.signOut(sharedPref.getString(getString(R.string.credentials_token_key), null))
                             .observe(getViewLifecycleOwner(), emptySession -> {
@@ -79,9 +81,27 @@ public class AccountFragment extends Fragment {
             binding.loginButton.setOnClickListener(null);
 
             binding.sessionUsername.setText(session.getUsername());
-            binding.sessionCanEdit.setText(getString(session.canEdit() ? R.string.yes : R.string.no));
+            switch (session.getLevel()) {
+                case 1:
+                    binding.sessionLevel.setText(getString(R.string.moder_level));
+                    break;
+                case 2:
+                    binding.sessionLevel.setText(getString(R.string.admin_level));
+                    binding.adminListButton.setVisibility(View.VISIBLE);
+                    binding.adminListButton.setOnClickListener(view -> {
+                        Navigation.findNavController(view).navigate(R.id.action_flightsList_to_admin_list);
+                    });
+                    break;
+                default:
+                    binding.sessionLevel.setText(getString(R.string.regular_level));
+                    break;
+            }
         } else {
             binding.sessionInfoLayout.setVisibility(View.GONE);
+            binding.controlButtons.setVisibility(View.GONE);
+            binding.adminListButton.setVisibility(View.GONE);
+            binding.adminListButton.setOnClickListener(null);
+            binding.logoutButton.setVisibility(View.GONE);
             binding.logoutButton.setOnClickListener(null);
             binding.loginButton.setVisibility(View.VISIBLE);
             binding.loginButton.setOnClickListener(view ->

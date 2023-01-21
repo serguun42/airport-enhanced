@@ -88,7 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
-                            android:text="@string/can_edit_short"
+                            android:text="@string/level_desc"
                             android:textFontWeight="500"
                             android:textColor="@color/card_supporting_color"
                             android:textSize="16dp" />
@@ -101,20 +101,39 @@
                             android:textColor="@color/black"
                             android:textSize="16dp"
                             android:layout_weight="1"
-                            android:id="@+id/session_can_edit" />
+                            android:id="@+id/session_level" />
                 </TableRow>
             </TableLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/logout_button"
-                android:layout_width="wrap_content"
+        <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/logout"
-                android:layout_marginVertical="16dp"
-                android:layout_gravity="center|bottom"
-                app:icon="@drawable/ic_baseline_login_24" />
+                android:gravity="center_horizontal"
+                android:visibility="visible"
+                android:id="@+id/control_buttons"
+                android:clipToPadding="false"
+                android:paddingVertical="16dp"
+                android:paddingHorizontal="16dp"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/admin_list_button"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/fab_margin"
+                    android:text="@string/all_users"
+                    app:icon="@drawable/ic_baseline_search_24" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    android:id="@+id/logout_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/logout"
+                    app:icon="@drawable/ic_baseline_login_24" />
+        </LinearLayout>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -129,18 +148,4 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:icon="@drawable/ic_baseline_login_24" />
-
-
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-            android:id="@+id/clear_database_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:text="@string/local_db"
-            android:layout_gravity="end|bottom"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:icon="@drawable/ic_baseline_delete_forever_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

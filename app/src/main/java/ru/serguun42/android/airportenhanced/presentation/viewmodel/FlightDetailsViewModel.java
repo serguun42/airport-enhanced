@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import ru.serguun42.android.airportenhanced.di.ServiceLocator;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
+import ru.serguun42.android.airportenhanced.presentation.repository.RepositoryActions;
 import ru.serguun42.android.airportenhanced.presentation.repository.network.APIRepository;
 
 public class FlightDetailsViewModel extends ViewModel {
@@ -19,7 +20,7 @@ public class FlightDetailsViewModel extends ViewModel {
         return flight;
     }
 
-    public LiveData<APIRepository.FlightDeleteResponse> deleteFlight(String token, String flightId) {
+    public LiveData<RepositoryActions.FlightDeleteResponse> deleteFlight(String token, String flightId) {
         return ServiceLocator.getInstance().getRepository().deleteFlight(token, flightId);
     }
 
