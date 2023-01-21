@@ -42,8 +42,21 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageSliderV
     @Override
     public void onBindViewHolder(@NonNull @NotNull ImageSliderViewHolder holder, int position) {
         if (flightList.get(position) != null && flightList.get(position).getImage() != null && !flightList.get(position).getImage().isEmpty()) {
-            holder.binding.imageAdd.setVisibility(View.GONE);
             holder.binding.imageContent.setVisibility(View.VISIBLE);
+            if (adding) {
+                holder.binding.imageRemove.setVisibility(View.VISIBLE);
+                holder.binding.imageRemove.setOnClickListener(v -> {
+                    Flight flight = flightList.get(position);
+                    flight.setImage(null);
+
+                    notifyDataSetChanged();
+                });
+            } else {
+                holder.binding.imageRemove.setVisibility(View.GONE);
+                holder.binding.imageRemove.setOnClickListener(null);
+            }
+            holder.binding.imageAdd.setVisibility(View.GONE);
+            holder.binding.imageAdd.setOnClickListener(null);
 
             if (mainActivity != null) {
                 try {
@@ -59,6 +72,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageSliderV
             }
         } else {
             holder.binding.imageContent.setVisibility(View.GONE);
+            holder.binding.imageRemove.setVisibility(View.GONE);
+            holder.binding.imageRemove.setOnClickListener(null);
             holder.binding.imageAdd.setVisibility(View.VISIBLE);
             holder.binding.imageAdd.setOnClickListener((View v) -> {
                 if (mainActivity != null) {

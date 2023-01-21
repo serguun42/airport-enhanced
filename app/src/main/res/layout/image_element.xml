@@ -5,19 +5,29 @@
         android:layout_height="match_parent">
 
     <ImageView
-            android:id="@+id/imageContent"
+            android:id="@+id/image_content"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
             android:layout_centerInParent="true" />
 
     <ImageButton
-            android:id="@+id/imageAdd"
+            android:id="@+id/image_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_add_24"
+            android:layout_margin="10dp"
+            android:layout_centerInParent="true" />
+
+    <ImageButton
+            android:id="@+id/image_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_button"
+            android:padding="10dp"
+            android:src="@drawable/ic_baseline_delete_white_24"
             android:layout_margin="10dp"
             android:layout_centerInParent="true" />
 </RelativeLayout>

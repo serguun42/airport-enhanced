@@ -114,7 +114,7 @@ public class FlightDetailedCardAdapter extends RecyclerView.Adapter<FlightDetail
         if (flightImage != null && !flightImage.isEmpty()) {
             holder.binding.recyclerview.setVisibility(View.VISIBLE);
 
-            ImageAdapter imageAdapter = new ImageAdapter(mainActivity, true, Arrays.asList(flight));
+            ImageAdapter imageAdapter = new ImageAdapter(mainActivity, false, Arrays.asList(flight));
             holder.binding.recyclerview.setHasFixedSize(true);
             holder.binding.recyclerview.setLayoutManager(new LinearLayoutManager(holder.binding.getRoot().getContext()));
             holder.binding.recyclerview.setAdapter(imageAdapter);
