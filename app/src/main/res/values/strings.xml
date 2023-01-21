@@ -63,4 +63,5 @@
     <string name="target_airport_iata_short">IATA code</string>
     <string name="local_db">Local DB</string>
     <string name="no_flights_in_list">No flights yet</string>
+    <string name="oauth2">OAuth2</string>
 </resources>

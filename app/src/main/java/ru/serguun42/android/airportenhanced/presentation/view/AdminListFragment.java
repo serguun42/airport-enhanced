@@ -89,22 +89,7 @@ public class AdminListFragment extends Fragment {
     }
 
     private void switchCreateButton(Session session) {
-        if (session != null && session.getLevel() >= 2) {
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-            System.out.println("LEVEL >= 2");
-        } else {
+        if (session == null || session.getLevel() < 2) {
             Toast.makeText(getContext(), getString(R.string.cannot_view_this_list), Toast.LENGTH_LONG).show();
             Navigation.findNavController(binding.getRoot()).popBackStack();
         }

@@ -25,6 +25,13 @@
                 app:popEnterAnim="@android:anim/fade_in"
                 app:popExitAnim="@anim/slide_right" />
         <action
+                android:id="@+id/action_flightsList_to_oauth"
+                app:destination="@id/oauth"
+                app:enterAnim="@anim/slide_left"
+                app:exitAnim="@android:anim/fade_out"
+                app:popEnterAnim="@android:anim/fade_in"
+                app:popExitAnim="@anim/slide_right" />
+        <action
                 android:id="@+id/action_flightsList_to_editor"
                 app:destination="@id/editor"
                 app:enterAnim="@anim/slide_left"
@@ -44,7 +51,7 @@
             android:id="@+id/flightDetails"
             android:name="ru.serguun42.android.airportenhanced.presentation.view.FlightDetailsFragment"
             android:label="flightDetails"
-            tools:layout="@layout/flight_details_fragment" >
+            tools:layout="@layout/flight_details_fragment">
         <action
                 android:id="@+id/action_flightDetails_to_editor"
                 app:destination="@id/editor"
@@ -61,9 +68,15 @@
             tools:layout="@layout/login_fragment" />
 
     <fragment
+            android:id="@+id/oauth"
+            android:name="ru.serguun42.android.airportenhanced.presentation.view.OAuthFragment"
+            android:label="oauth"
+            tools:layout="@layout/oauth_fragment" />
+
+    <fragment
             android:id="@+id/adminList"
             android:name="ru.serguun42.android.airportenhanced.presentation.view.AdminListFragment"
-            android:label="login"
+            android:label="adminList"
             tools:layout="@layout/admin_list_fragment" />
 
     <fragment
