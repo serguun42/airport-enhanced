@@ -21,7 +21,6 @@ import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.AccountFragmentBinding;
 import ru.serguun42.android.airportenhanced.domain.model.Session;
-import ru.serguun42.android.airportenhanced.presentation.repository.network.oauth.OAuthMethod;
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.AccountViewModel;
 
 public class AccountFragment extends Fragment {
@@ -81,8 +80,6 @@ public class AccountFragment extends Fragment {
             binding.outSessionButtons.setVisibility(View.GONE);
             binding.loginButton.setVisibility(View.GONE);
             binding.loginButton.setOnClickListener(null);
-            binding.oauthButton.setVisibility(View.GONE);
-            binding.oauthButton.setOnClickListener(null);
 
             binding.sessionUsername.setText(session.getUsername());
             switch (session.getLevel()) {
@@ -111,10 +108,6 @@ public class AccountFragment extends Fragment {
             binding.loginButton.setVisibility(View.VISIBLE);
             binding.loginButton.setOnClickListener(view ->
                     Navigation.findNavController(view).navigate(R.id.action_flightsList_to_login)
-            );
-            binding.oauthButton.setVisibility(View.VISIBLE);
-            binding.oauthButton.setOnClickListener(v ->
-                    OAuthMethod.startAuthentication((MainActivity) getActivity())
             );
         }
     }

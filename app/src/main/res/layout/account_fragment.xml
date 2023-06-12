@@ -151,15 +151,6 @@
             app:layout_constraintTop_toBottomOf="@id/recyclerview">
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/oauth_button"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/fab_margin"
-                android:text="@string/oauth2"
-                app:icon="@drawable/ic_baseline_key_24" />
-
-        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/login_button"
                 android:visibility="gone"
                 android:layout_width="wrap_content"

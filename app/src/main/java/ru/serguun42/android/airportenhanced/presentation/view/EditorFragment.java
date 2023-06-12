@@ -36,7 +36,6 @@ import ru.serguun42.android.airportenhanced.MainActivity;
 import ru.serguun42.android.airportenhanced.R;
 import ru.serguun42.android.airportenhanced.databinding.EditorFragmentBinding;
 import ru.serguun42.android.airportenhanced.domain.model.Flight;
-import ru.serguun42.android.airportenhanced.presentation.view.adapters.ImageAdapter;
 import ru.serguun42.android.airportenhanced.presentation.viewmodel.EditorViewModel;
 
 public class EditorFragment extends Fragment {
@@ -44,7 +43,6 @@ public class EditorFragment extends Fragment {
 
     private SharedPreferences sharedPref;
     private EditorFragmentBinding binding;
-    private ImageAdapter imageAdapter;
     private EditorViewModel viewModel;
 
     private String flightId;
@@ -72,11 +70,6 @@ public class EditorFragment extends Fragment {
         ((MainActivity) getActivity()).setSupportActionBar(binding.toolbar);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         binding.toolbar.setNavigationOnClickListener(v -> Navigation.findNavController(v).popBackStack());
-
-        imageAdapter = new ImageAdapter((MainActivity) getActivity(), true, Arrays.asList((Flight) null));
-        binding.recyclerview.setHasFixedSize(true);
-        binding.recyclerview.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
-        binding.recyclerview.setAdapter(imageAdapter);
 
         viewModel = new ViewModelProvider(this).get(EditorViewModel.class);
         if (flightId != null && !flightId.isEmpty()) {
@@ -191,8 +184,6 @@ public class EditorFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        imageAdapter.updateFlights(Arrays.asList(flight));
     }
 
     private Flight collectFlightByFields() {
@@ -209,12 +200,6 @@ public class EditorFragment extends Fragment {
             flight.setDeparture(DateTimeFormatter.ISO_INSTANT.format(departingLocalDateTime.toInstant(ZoneOffset.UTC)));
         if (arrivingLocalDateTime != null)
             flight.setArrival(DateTimeFormatter.ISO_INSTANT.format(arrivingLocalDateTime.toInstant(ZoneOffset.UTC)));
-
-        String imageFromAdapter = imageAdapter.getImages() != null ? imageAdapter.getImages().get(0) : null;
-        if (imageFromAdapter != null)
-            flight.setImage(imageFromAdapter.isEmpty() ? null : imageFromAdapter);
-        else
-            flight.setImage(null);
 
         return flight;
     }
